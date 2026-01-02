@@ -23,7 +23,7 @@ class DataSeeder @Inject constructor(
         val defaultAccount = Account(
             name = "Efectivo",
             currentBalance = 0.0,
-            type = "CASH"
+            type = "Efectivo"
         )
         accountDao.insertAccount(defaultAccount)
     }
