@@ -25,4 +25,13 @@
     <string name="account_type_savings">Ahorros</string>
     <string name="account_type_investment">Inversión</string>
     <string name="title_dashboard">Inicio</string>
+    <string name="title_bitcoin">Bitcoin</string>
+    <string name="bitcoin_price">Precio Actual</string>
+    <string name="bitcoin_holdings">Mis Satoshis</string>
+    <string name="bitcoin_value">Valor Fiat</string>
+    <string name="action_buy_btc">Comprar (Swap In)</string>
+    <string name="action_sell_btc">Vender (Swap Out)</string>
+    <string name="label_sats_amount">Cantidad (Sats)</string>
+    <string name="label_fiat_amount">Cantidad (Fiat)</string>
+    <string name="msg_btc_transaction_saved">Operación registrada</string>
 </resources>

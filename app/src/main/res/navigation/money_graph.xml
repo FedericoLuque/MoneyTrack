@@ -39,4 +39,25 @@
         android:name="com.federico.moneytrack.ui.account.AddAccountFragment"
         android:label="Añadir Cuenta"
         tools:layout="@layout/fragment_add_account" />
+
+    <fragment
+        android:id="@+id/bitcoinFragment"
+        android:name="com.federico.moneytrack.ui.bitcoin.BitcoinFragment"
+        android:label="@string/title_bitcoin"
+        tools:layout="@layout/fragment_bitcoin">
+        <action
+            android:id="@+id/action_bitcoinFragment_to_addBitcoinTransactionFragment"
+            app:destination="@id/addBitcoinTransactionFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addBitcoinTransactionFragment"
+        android:name="com.federico.moneytrack.ui.bitcoin.AddBitcoinTransactionFragment"
+        android:label="Operación Bitcoin"
+        tools:layout="@layout/fragment_add_bitcoin_transaction">
+        <argument
+            android:name="isBuy"
+            app:argType="boolean"
+            android:defaultValue="true" />
+    </fragment>
 </navigation>

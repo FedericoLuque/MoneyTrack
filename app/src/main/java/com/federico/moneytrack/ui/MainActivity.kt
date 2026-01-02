@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         // Hide Bottom Navigation on destination change for specific fragments
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.dashboardFragment, R.id.accountsFragment -> {
+                R.id.dashboardFragment, R.id.accountsFragment, R.id.bitcoinFragment -> {
                     binding.bottomNavView.visibility = View.VISIBLE
                 }
                 else -> {
