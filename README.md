@@ -1,26 +1,26 @@
 # MoneyTrack
 
-## Architecture
-This project follows **Clean Architecture** with **MVVM**.
+## Arquitectura
+Este proyecto sigue los principios de **Clean Architecture** (Arquitectura Limpia) junto con el patrón **MVVM**.
 
-### Packages
-- `data`: Data sources (Room, Retrofit).
-    - `local`: Room Database, Entities, DAOs.
-    - `remote`: Retrofit services (Future).
-    - `repository`: Implementation of Domain Repositories.
-- `domain`: Business logic.
-    - `model`: Pure Kotlin data classes.
-    - `repository`: Interfaces for repositories.
-    - `usecase`: Business logic Use Cases (Future).
-- `ui`: Presentation layer (Activities, Fragments, ViewModels).
-- `di`: Dependency Injection (Hilt Modules).
+### Estructura de Paquetes
+- `data`: Orígenes de datos (Room, Retrofit).
+    - `local`: Base de datos Room, Entidades y DAOs.
+    - `remote`: Servicios de Retrofit (Para futura integración con APIs).
+    - `repository`: Implementación concreta de los repositorios definidos en el Dominio.
+- `domain`: Lógica de negocio pura (independiente de la plataforma).
+    - `model`: Clases de datos (POJOs) de Kotlin.
+    - `repository`: Interfaces de los repositorios.
+    - `usecase`: Casos de uso específicos de la lógica de negocio (Próximamente).
+- `ui`: Capa de presentación (Activities, Fragments, ViewModels).
+- `di`: Inyección de dependencias (Módulos de Hilt).
 
-## Future Logic
-- **Business Logic**: Place complex logic in **Use Cases** within the `domain/usecase` package.
-- **Data Logic**: Implement the Repository interfaces in `data/repository`.
-- **UI Logic**: Use **ViewModels** in `ui` packages to handle UI state and events.
+## Lógica Futura
+- **Lógica de Negocio**: Coloca la lógica compleja en los **Casos de Uso** (Use Cases) dentro del paquete `domain/usecase`.
+- **Lógica de Datos**: Implementa las interfaces de los repositorios en `data/repository`.
+- **Lógica de UI**: Utiliza los **ViewModels** en los paquetes de `ui` para gestionar el estado y los eventos de la interfaz.
 
-## Setup
-1. Sync Gradle.
-2. Build the project to generate Hilt and Room code.
-3. Run on Emulator/Device.
+## Configuración Inicial
+1. Sincroniza Gradle para descargar las dependencias.
+2. Compila el proyecto para generar el código automático de Hilt y Room.
+3. Ejecuta en un emulador o dispositivo físico.
