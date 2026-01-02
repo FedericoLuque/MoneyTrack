@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MoneyTrack</string>
+    <string name="dashboard_total_balance">Saldo Total</string>
+    <string name="dashboard_recent_transactions">Transacciones Recientes</string>
+    <string name="dashboard_loading">Cargando...</string>
+    <string name="action_add_transaction">Añadir Transacción</string>
+    <string name="msg_add_clicked">Añadir Transacción Click</string>
 </resources>
