@@ -8,6 +8,16 @@
     <fragment
         android:id="@+id/dashboardFragment"
         android:name="com.federico.moneytrack.ui.dashboard.DashboardFragment"
-        android:label="DashboardFragment"
-        tools:layout="@layout/fragment_dashboard" />
+        android:label="Dashboard"
+        tools:layout="@layout/fragment_dashboard">
+        <action
+            android:id="@+id/action_dashboardFragment_to_addTransactionFragment"
+            app:destination="@id/addTransactionFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addTransactionFragment"
+        android:name="com.federico.moneytrack.ui.transaction.AddTransactionFragment"
+        android:label="Nueva Transacción"
+        tools:layout="@layout/fragment_add_transaction" />
 </navigation>

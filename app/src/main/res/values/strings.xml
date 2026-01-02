@@ -5,4 +5,13 @@
     <string name="dashboard_loading">Cargando...</string>
     <string name="action_add_transaction">Añadir Transacción</string>
     <string name="msg_add_clicked">Añadir Transacción Click</string>
+    <string name="title_add_transaction">Nueva Transacción</string>
+    <string name="label_amount">Cantidad</string>
+    <string name="label_note">Nota (opcional)</string>
+    <string name="label_category">Categoría</string>
+    <string name="label_account">Cuenta</string>
+    <string name="label_date">Fecha</string>
+    <string name="btn_save">Guardar</string>
+    <string name="error_invalid_amount">Por favor, introduce una cantidad válida</string>
+    <string name="msg_transaction_saved">Transacción guardada con éxito</string>
 </resources>
