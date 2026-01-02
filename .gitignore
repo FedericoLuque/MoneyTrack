@@ -1,0 +1,59 @@
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+    
+# Android Studio navigation editor temp files
+.navigation/
+
+# Google Services file
+google-services.json
+
+# Signing files
+.jks
+.keystore
+
+# External native build artifacts
+.externalNativeBuild
+.cxx/
+
+# Keystore files
+*.jks
+*.keystore
+*.p12
+
+# Google Play Services
+google-services.json
+
+# Build-time generated files
+app/src/main/res/raw/google_services.json
+app/google-services.json
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Log files
+*.log
+
+# Android Studio temporary files
+.idea/
+*.iml
+.DS_Store
+
+# Gradle files
+.gradle/
+build/
+
+# Kotlin
+*.kotlin_module
