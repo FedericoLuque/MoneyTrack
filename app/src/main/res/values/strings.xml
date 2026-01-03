@@ -34,4 +34,12 @@
     <string name="label_sats_amount">Cantidad (Sats)</string>
     <string name="label_fiat_amount">Cantidad (Fiat)</string>
     <string name="msg_btc_transaction_saved">Operación registrada</string>
+    <string name="title_categories">Categorías</string>
+    <string name="action_add_category">Nueva Categoría</string>
+    <string name="label_category_name">Nombre de la categoría</string>
+    <string name="label_category_type">Tipo (Ingreso/Gasto)</string>
+    <string name="type_income">Ingreso</string>
+    <string name="type_expense">Gasto</string>
+    <string name="msg_category_saved">Categoría guardada</string>
+    <string name="action_manage_categories">Gestionar Categorías</string>
 </resources>

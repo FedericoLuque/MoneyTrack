@@ -42,6 +42,10 @@ class DashboardFragment : Fragment() {
             findNavController().navigate(com.federico.moneytrack.R.id.action_dashboardFragment_to_addTransactionFragment)
         }
 
+        binding.btnSettings.setOnClickListener {
+            findNavController().navigate(com.federico.moneytrack.R.id.action_dashboardFragment_to_categoriesFragment)
+        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { state ->
