@@ -7,4 +7,5 @@ interface BitcoinRepository {
     fun getBitcoinHoldings(): Flow<List<BitcoinHolding>>
     suspend fun insertBitcoinHolding(holding: BitcoinHolding)
     suspend fun deleteBitcoinHolding(holding: BitcoinHolding)
+    suspend fun getBitcoinPrice(currency: String): Double
 }

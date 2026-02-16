@@ -9,12 +9,21 @@ import javax.inject.Inject
 import com.federico.moneytrack.data.local.entity.BitcoinHolding as BitcoinEntity
 
 class BitcoinRepositoryImpl @Inject constructor(
-    private val dao: BitcoinHoldingDao
+    private val dao: BitcoinHoldingDao,
+    private val api: com.federico.moneytrack.data.remote.CoinGeckoApi
 ) : BitcoinRepository {
 
     override fun getBitcoinHoldings(): Flow<List<BitcoinHolding>> {
         return dao.getBitcoinHoldings().map { entities ->
             entities.map { it.toDomain() }
+        }
+    }
+
+    override suspend fun getBitcoinPrice(currency: String): Double {
+        val response = api.getBitcoinPrice(vsCurrencies = currency.lowercase())
+        return when (currency.lowercase()) {
+            "eur" -> response.bitcoin.eur ?: 0.0
+            else -> response.bitcoin.usd ?: 0.0
         }
     }
 

@@ -2,11 +2,10 @@ package com.federico.moneytrack.ui.dashboard
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.federico.moneytrack.domain.model.BitcoinHolding
 import com.federico.moneytrack.domain.model.Transaction
-import com.federico.moneytrack.domain.repository.BitcoinRepository
 import com.federico.moneytrack.domain.repository.TransactionRepository
 import com.federico.moneytrack.domain.usecase.GetTotalBalanceUseCase
+import com.federico.moneytrack.domain.usecase.GetBitcoinValueUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -18,19 +17,19 @@ import javax.inject.Inject
 class DashboardViewModel @Inject constructor(
     getTotalBalanceUseCase: GetTotalBalanceUseCase,
     transactionRepository: TransactionRepository,
-    bitcoinRepository: BitcoinRepository
+    getBitcoinValueUseCase: GetBitcoinValueUseCase
 ) : ViewModel() {
 
     // Estado combinado para la UI
     val uiState: StateFlow<DashboardUiState> = combine(
         getTotalBalanceUseCase(),
         transactionRepository.getAllTransactions(),
-        bitcoinRepository.getBitcoinHoldings()
-    ) { totalBalance, transactions, bitcoinHoldings ->
+        getBitcoinValueUseCase("usd") // Usamos USD por defecto
+    ) { totalBalance, transactions, btcValue ->
         DashboardUiState.Success(
             fiatBalance = totalBalance,
             recentTransactions = transactions.take(5), // Solo las 5 últimas
-            bitcoinHoldings = bitcoinHoldings
+            bitcoinValue = btcValue
         )
     }.stateIn(
         scope = viewModelScope,
@@ -44,6 +43,6 @@ sealed class DashboardUiState {
     data class Success(
         val fiatBalance: Double,
         val recentTransactions: List<Transaction>,
-        val bitcoinHoldings: List<BitcoinHolding>
+        val bitcoinValue: Double
     ) : DashboardUiState()
 }

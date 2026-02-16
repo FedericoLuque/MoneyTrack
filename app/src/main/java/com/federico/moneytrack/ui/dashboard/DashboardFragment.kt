@@ -52,6 +52,7 @@ class DashboardFragment : Fragment() {
                         is DashboardUiState.Success -> {
                             val format = NumberFormat.getCurrencyInstance(Locale.getDefault())
                             binding.tvTotalBalance.text = format.format(state.fiatBalance)
+                            binding.tvBitcoinValue.text = format.format(state.bitcoinValue)
                             transactionAdapter.submitList(state.recentTransactions)
                         }
                     }
