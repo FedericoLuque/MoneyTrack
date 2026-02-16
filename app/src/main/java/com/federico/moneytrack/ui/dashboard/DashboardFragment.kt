@@ -62,7 +62,7 @@ class DashboardFragment : Fragment() {
                             binding.tvTotalBalance.text = getString(com.federico.moneytrack.R.string.dashboard_loading)
                         }
                         is DashboardUiState.Success -> {
-                            val format = NumberFormat.getCurrencyInstance(Locale.getDefault())
+                            val format = NumberFormat.getCurrencyInstance(Locale("es", "ES"))
                             binding.tvTotalBalance.text = format.format(state.fiatBalance)
                             binding.tvBitcoinValue.text = format.format(state.bitcoinValue)
                             transactionAdapter.submitList(state.recentTransactions)

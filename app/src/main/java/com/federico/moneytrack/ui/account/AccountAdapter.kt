@@ -23,7 +23,7 @@ class AccountAdapter : ListAdapter<Account, AccountAdapter.AccountViewHolder>(Di
 
     class AccountViewHolder(private val binding: ItemAccountBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(account: Account) {
-            val currencyFormat = NumberFormat.getCurrencyInstance(Locale.getDefault())
+            val currencyFormat = NumberFormat.getCurrencyInstance(Locale("es", "ES"))
             
             binding.tvAccountName.text = account.name
             binding.tvAccountType.text = account.type

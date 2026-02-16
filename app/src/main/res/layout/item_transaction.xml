@@ -60,7 +60,7 @@
             android:id="@+id/tvAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="-$50.00"
+            android:text="-€50,00"
             android:textColor="#D32F2F"
             android:textSize="16sp"
             android:textStyle="bold"

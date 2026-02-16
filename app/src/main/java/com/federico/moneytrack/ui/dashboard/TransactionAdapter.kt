@@ -41,7 +41,7 @@ class TransactionAdapter(
             val transaction = item.transaction
             val category = item.category
             
-            val currencyFormat = NumberFormat.getCurrencyInstance(Locale.getDefault())
+            val currencyFormat = NumberFormat.getCurrencyInstance(Locale("es", "ES"))
             val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
 
             binding.tvNote.text = transaction.note ?: "Sin nota"
