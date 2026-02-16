@@ -25,4 +25,10 @@ interface BudgetDao {
 
     @Delete
     suspend fun deleteBudget(budget: Budget)
+
+    @Query("DELETE FROM budgets")
+    suspend fun deleteAll()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(budgets: List<Budget>)
 }

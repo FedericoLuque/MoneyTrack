@@ -8,6 +8,7 @@ interface TransactionRepository {
     fun getAllTransactions(): Flow<List<Transaction>>
     fun getAllTransactionsWithCategory(): Flow<List<TransactionWithCategory>>
     fun getRecentTransactionsWithCategory(limit: Int): Flow<List<TransactionWithCategory>>
+    fun getTransactionsByDateRange(startDate: Long, endDate: Long): Flow<List<TransactionWithCategory>>
     suspend fun getTransactionById(id: Long): Transaction?
     suspend fun insertTransaction(transaction: Transaction)
     suspend fun deleteTransaction(transaction: Transaction)

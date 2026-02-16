@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_transactionsFragment"
             app:destination="@id/transactionsFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
 
     <fragment
@@ -74,6 +77,12 @@
     </fragment>
 
     <fragment
+        android:id="@+id/chartsFragment"
+        android:name="com.federico.moneytrack.ui.charts.ChartsFragment"
+        android:label="@string/title_charts"
+        tools:layout="@layout/fragment_charts" />
+
+    <fragment
         android:id="@+id/categoriesFragment"
         android:name="com.federico.moneytrack.ui.category.CategoriesFragment"
         android:label="@string/title_categories"
@@ -88,4 +97,10 @@
         android:name="com.federico.moneytrack.ui.category.AddCategoryFragment"
         android:label="Nueva Categoría"
         tools:layout="@layout/fragment_add_category" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.federico.moneytrack.ui.settings.SettingsFragment"
+        android:label="@string/settings_title"
+        tools:layout="@layout/fragment_settings" />
 </navigation>

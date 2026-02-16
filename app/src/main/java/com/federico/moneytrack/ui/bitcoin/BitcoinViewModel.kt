@@ -30,7 +30,7 @@ class BitcoinViewModel @Inject constructor(
 
     val uiState: StateFlow<BitcoinUiState> = combine(
         bitcoinRepository.getBitcoinHoldings(),
-        getBitcoinValueUseCase("usd")
+        getBitcoinValueUseCase("eur")
     ) { holdings, fiatValue ->
         val totalSats = holdings.sumOf { it.satsAmount }
         BitcoinUiState(

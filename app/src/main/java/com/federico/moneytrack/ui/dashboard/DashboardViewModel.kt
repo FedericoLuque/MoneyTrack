@@ -23,7 +23,7 @@ class DashboardViewModel @Inject constructor(
     val uiState: StateFlow<DashboardUiState> = combine(
         accountRepository.getAllAccounts(),
         transactionRepository.getRecentTransactionsWithCategory(5),
-        getBitcoinValueUseCase("usd")
+        getBitcoinValueUseCase("eur")
     ) { accounts, recentTransactions, btcValue ->
         val totalBalance = accounts.sumOf { it.currentBalance }
         DashboardUiState.Success(

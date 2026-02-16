@@ -42,8 +42,12 @@ class DashboardFragment : Fragment() {
             findNavController().navigate(com.federico.moneytrack.R.id.action_dashboardFragment_to_addTransactionFragment)
         }
 
-        binding.btnSettings.setOnClickListener {
+        binding.btnCategories.setOnClickListener {
             findNavController().navigate(com.federico.moneytrack.R.id.action_dashboardFragment_to_categoriesFragment)
+        }
+
+        binding.btnConfiguracion.setOnClickListener {
+            findNavController().navigate(com.federico.moneytrack.R.id.action_dashboardFragment_to_settingsFragment)
         }
 
         binding.btnViewAllTransactions.setOnClickListener {
@@ -58,7 +62,7 @@ class DashboardFragment : Fragment() {
                             binding.tvTotalBalance.text = getString(com.federico.moneytrack.R.string.dashboard_loading)
                         }
                         is DashboardUiState.Success -> {
-                            val format = NumberFormat.getCurrencyInstance(Locale.getDefault())
+                            val format = NumberFormat.getCurrencyInstance(Locale("es", "ES"))
                             binding.tvTotalBalance.text = format.format(state.fiatBalance)
                             binding.tvBitcoinValue.text = format.format(state.bitcoinValue)
                             transactionAdapter.submitList(state.recentTransactions)

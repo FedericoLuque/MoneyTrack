@@ -38,7 +38,7 @@ class BitcoinFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { state ->
-                    val currencyFormat = NumberFormat.getCurrencyInstance(Locale.getDefault())
+                    val currencyFormat = NumberFormat.getCurrencyInstance(Locale("es", "ES"))
                     val satsFormat = NumberFormat.getIntegerInstance(Locale.getDefault())
                     
                     binding.tvBtcBalance.text = "${satsFormat.format(state.totalSats)} Sats"

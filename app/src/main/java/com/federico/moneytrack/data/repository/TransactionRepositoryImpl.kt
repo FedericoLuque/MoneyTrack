@@ -34,6 +34,12 @@ class TransactionRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getTransactionsByDateRange(startDate: Long, endDate: Long): Flow<List<TransactionWithCategory>> {
+        return dao.getTransactionsByDateRange(startDate, endDate).map { pojos ->
+            pojos.map { it.toDomain() }
+        }
+    }
+
     override suspend fun getTransactionById(id: Long): Transaction? {
         return null // Not implemented in DAO yet
     }
