@@ -74,6 +74,12 @@
     </fragment>
 
     <fragment
+        android:id="@+id/chartsFragment"
+        android:name="com.federico.moneytrack.ui.charts.ChartsFragment"
+        android:label="@string/title_charts"
+        tools:layout="@layout/fragment_charts" />
+
+    <fragment
         android:id="@+id/categoriesFragment"
         android:name="com.federico.moneytrack.ui.category.CategoriesFragment"
         android:label="@string/title_categories"

@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.federico.moneytrack"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.federico.moneytrack"
@@ -73,4 +73,7 @@ dependencies {
     // Lifecycle
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.livedata.ktx)
+
+    // Vico Charts
+    implementation(libs.vico.views)
 }
