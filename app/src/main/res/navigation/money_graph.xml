@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_addTransactionFragment"
             app:destination="@id/addTransactionFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_accountsFragment"
+            app:destination="@id/accountsFragment" />
     </fragment>
 
     <fragment
@@ -20,4 +23,20 @@
         android:name="com.federico.moneytrack.ui.transaction.AddTransactionFragment"
         android:label="Nueva Transacción"
         tools:layout="@layout/fragment_add_transaction" />
+
+    <fragment
+        android:id="@+id/accountsFragment"
+        android:name="com.federico.moneytrack.ui.account.AccountsFragment"
+        android:label="Mis Cuentas"
+        tools:layout="@layout/fragment_accounts">
+        <action
+            android:id="@+id/action_accountsFragment_to_addAccountFragment"
+            app:destination="@id/addAccountFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addAccountFragment"
+        android:name="com.federico.moneytrack.ui.account.AddAccountFragment"
+        android:label="Añadir Cuenta"
+        tools:layout="@layout/fragment_add_account" />
 </navigation>

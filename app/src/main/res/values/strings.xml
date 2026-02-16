@@ -13,5 +13,16 @@
     <string name="label_date">Fecha</string>
     <string name="btn_save">Guardar</string>
     <string name="error_invalid_amount">Por favor, introduce una cantidad válida</string>
-    <string name="msg_transaction_saved">Transacción guardada con éxito</string>
+    <string name="title_accounts">Mis Cuentas</string>
+    <string name="action_add_account">Añadir Cuenta</string>
+    <string name="label_account_name">Nombre de la cuenta</string>
+    <string name="label_account_type">Tipo de cuenta</string>
+    <string name="label_initial_balance">Saldo inicial</string>
+    <string name="msg_account_saved">Cuenta creada con éxito</string>
+    <string name="error_empty_name">El nombre no puede estar vacío</string>
+    <string name="account_type_cash">Efectivo</string>
+    <string name="account_type_bank">Banco</string>
+    <string name="account_type_savings">Ahorros</string>
+    <string name="account_type_investment">Inversión</string>
+    <string name="title_dashboard">Inicio</string>
 </resources>
