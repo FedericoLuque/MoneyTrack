@@ -42,4 +42,11 @@
     <string name="type_expense">Gasto</string>
     <string name="msg_category_saved">Categoría guardada</string>
     <string name="action_manage_categories">Gestionar Categorías</string>
+    <string name="title_charts">Gráficos</string>
+    <string name="chart_weekly_cash_flow">Flujo de Caja Semanal</string>
+    <string name="chart_patrimony_composition">Composición de Patrimonio</string>
+    <string name="legend_income">Ingresos</string>
+    <string name="legend_expense">Gastos</string>
+    <string name="legend_fiat">Fiat</string>
+    <string name="legend_bitcoin">Bitcoin</string>
 </resources>
