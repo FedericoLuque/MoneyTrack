@@ -2,9 +2,9 @@ package com.federico.moneytrack.ui.dashboard
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.federico.moneytrack.domain.model.Transaction
+import com.federico.moneytrack.domain.model.TransactionWithCategory
+import com.federico.moneytrack.domain.repository.AccountRepository
 import com.federico.moneytrack.domain.repository.TransactionRepository
-import com.federico.moneytrack.domain.usecase.GetTotalBalanceUseCase
 import com.federico.moneytrack.domain.usecase.GetBitcoinValueUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -15,34 +15,30 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
-    getTotalBalanceUseCase: GetTotalBalanceUseCase,
+    accountRepository: AccountRepository,
     transactionRepository: TransactionRepository,
     getBitcoinValueUseCase: GetBitcoinValueUseCase
 ) : ViewModel() {
 
-    // Estado combinado para la UI
     val uiState: StateFlow<DashboardUiState> = combine(
-        getTotalBalanceUseCase(),
-        transactionRepository.getAllTransactions(),
-        getBitcoinValueUseCase("usd") // Usamos USD por defecto
-    ) { totalBalance, transactions, btcValue ->
+        accountRepository.getAllAccounts(),
+        transactionRepository.getRecentTransactionsWithCategory(5),
+        getBitcoinValueUseCase("usd")
+    ) { accounts, recentTransactions, btcValue ->
+        val totalBalance = accounts.sumOf { it.currentBalance }
         DashboardUiState.Success(
             fiatBalance = totalBalance,
-            recentTransactions = transactions.take(5), // Solo las 5 últimas
-            bitcoinValue = btcValue
+            bitcoinValue = btcValue,
+            recentTransactions = recentTransactions
         )
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = DashboardUiState.Loading
-    )
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), DashboardUiState.Loading)
 }
 
 sealed class DashboardUiState {
     object Loading : DashboardUiState()
     data class Success(
         val fiatBalance: Double,
-        val recentTransactions: List<Transaction>,
-        val bitcoinValue: Double
+        val bitcoinValue: Double,
+        val recentTransactions: List<TransactionWithCategory>
     ) : DashboardUiState()
 }

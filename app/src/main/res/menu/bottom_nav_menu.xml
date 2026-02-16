@@ -8,4 +8,8 @@
         android:id="@+id/accountsFragment"
         android:icon="@drawable/ic_accounts"
         android:title="@string/title_accounts" />
+    <item
+        android:id="@+id/bitcoinFragment"
+        android:icon="@drawable/ic_bitcoin"
+        android:title="@string/title_bitcoin" />
 </menu>
