@@ -47,8 +47,7 @@ class DashboardFragment : Fragment() {
         }
 
         binding.btnConfiguracion.setOnClickListener {
-            com.federico.moneytrack.ui.settings.SettingsDialogFragment()
-                .show(childFragmentManager, "settings")
+            findNavController().navigate(com.federico.moneytrack.R.id.action_dashboardFragment_to_settingsFragment)
         }
 
         binding.btnViewAllTransactions.setOnClickListener {

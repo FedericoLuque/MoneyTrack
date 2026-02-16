@@ -54,4 +54,13 @@
     <string name="legend_expense">Gastos</string>
     <string name="legend_fiat">Fiat</string>
     <string name="legend_bitcoin">Bitcoin</string>
+    <string name="settings_section_appearance">Apariencia</string>
+    <string name="settings_section_data">Datos</string>
+    <string name="settings_export_csv">Exportar datos (CSV)</string>
+    <string name="settings_import_csv">Importar datos (CSV)</string>
+    <string name="settings_import_warning">La importación eliminará todos los datos existentes</string>
+    <string name="settings_export_success">Datos exportados correctamente</string>
+    <string name="settings_import_success">Datos importados correctamente: %d registros</string>
+    <string name="settings_export_error">Error al exportar: %s</string>
+    <string name="settings_import_error">Error al importar: %s</string>
 </resources>
