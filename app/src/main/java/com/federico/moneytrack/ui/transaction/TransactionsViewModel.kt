@@ -2,12 +2,9 @@ package com.federico.moneytrack.ui.transaction
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.federico.moneytrack.domain.model.Transaction
 import com.federico.moneytrack.domain.model.TransactionWithCategory
 import com.federico.moneytrack.domain.repository.BitcoinRepository
 import com.federico.moneytrack.domain.repository.TransactionRepository
-import com.federico.moneytrack.domain.usecase.DeleteTransactionUseCase
-import com.federico.moneytrack.domain.usecase.bitcoin.DeleteBitcoinTransactionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -19,9 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TransactionsViewModel @Inject constructor(
-    private val transactionRepository: TransactionRepository,
-    private val deleteTransactionUseCase: DeleteTransactionUseCase,
-    private val deleteBitcoinTransactionUseCase: DeleteBitcoinTransactionUseCase,
+    transactionRepository: TransactionRepository,
     private val bitcoinRepository: BitcoinRepository
 ) : ViewModel() {
 
@@ -31,30 +26,26 @@ class TransactionsViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow: SharedFlow<UiEvent> = _eventFlow
 
-    fun deleteTransaction(transaction: Transaction, categoryType: String?) {
-        viewModelScope.launch {
-            try {
-                if (categoryType == "BITCOIN") {
-                    val holding = bitcoinRepository.getHoldingByTransactionId(transaction.id)
-                    if (holding != null) {
-                        deleteBitcoinTransactionUseCase(holding)
-                    } else {
-                        // Holding no encontrado, borrar solo la transacción revirtiendo saldo
-                        deleteTransactionUseCase(transaction, transaction.amount < 0)
-                    }
+    fun onTransactionClicked(item: TransactionWithCategory) {
+        val categoryType = item.category?.transactionType
+        if (categoryType == "BITCOIN") {
+            viewModelScope.launch {
+                val holding = bitcoinRepository.getHoldingByTransactionId(item.transaction.id)
+                if (holding != null) {
+                    _eventFlow.emit(UiEvent.NavigateToBitcoinDetail(holding.id))
                 } else {
-                    val isExpense = categoryType == "EXPENSE" || transaction.amount < 0
-                    deleteTransactionUseCase(transaction, isExpense)
+                    _eventFlow.emit(UiEvent.NavigateToTransactionDetail(item.transaction.id))
                 }
-                _eventFlow.emit(UiEvent.DeleteSuccess)
-            } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.Error(e.message ?: "Error al eliminar"))
+            }
+        } else {
+            viewModelScope.launch {
+                _eventFlow.emit(UiEvent.NavigateToTransactionDetail(item.transaction.id))
             }
         }
     }
 
     sealed class UiEvent {
-        object DeleteSuccess : UiEvent()
-        data class Error(val message: String) : UiEvent()
+        data class NavigateToTransactionDetail(val transactionId: Long) : UiEvent()
+        data class NavigateToBitcoinDetail(val holdingId: Long) : UiEvent()
     }
 }

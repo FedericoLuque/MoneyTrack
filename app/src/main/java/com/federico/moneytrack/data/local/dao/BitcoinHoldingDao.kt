@@ -26,6 +26,9 @@ interface BitcoinHoldingDao {
     @Query("SELECT COALESCE(SUM(sats_amount), 0) FROM bitcoin_holdings")
     suspend fun getTotalSats(): Long
 
+    @Query("SELECT * FROM bitcoin_holdings WHERE id = :id")
+    suspend fun getHoldingById(id: Long): BitcoinHolding?
+
     @Query("SELECT * FROM bitcoin_holdings WHERE transaction_id = :transactionId")
     suspend fun getHoldingByTransactionId(transactionId: Long): BitcoinHolding?
 

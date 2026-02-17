@@ -67,7 +67,6 @@ class AddBitcoinTransactionFragment : Fragment() {
                             is BitcoinViewModel.UiEvent.Error -> {
                                 Toast.makeText(requireContext(), event.message, Toast.LENGTH_LONG).show()
                             }
-                            else -> { }
                         }
                     }
                 }

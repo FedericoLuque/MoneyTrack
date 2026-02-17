@@ -63,6 +63,10 @@ class BitcoinRepositoryImpl @Inject constructor(
         dao.deleteBitcoinHolding(holding.toEntity())
     }
 
+    override suspend fun getHoldingById(id: Long): BitcoinHolding? {
+        return dao.getHoldingById(id)?.toDomain()
+    }
+
     override suspend fun getHoldingByTransactionId(transactionId: Long): BitcoinHolding? {
         return dao.getHoldingByTransactionId(transactionId)?.toDomain()
     }

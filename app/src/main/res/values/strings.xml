@@ -80,4 +80,25 @@
     <string name="bitcoin_delete_dialog_message">¿Estás seguro de que deseas eliminar esta operación? Se revertirá el saldo fiat y se eliminará el registro de la transacción.</string>
     <string name="bitcoin_delete_dialog_confirm">Eliminar</string>
     <string name="bitcoin_delete_success">Operación Bitcoin eliminada</string>
+
+    <!-- Detalle de transacción / holding -->
+    <string name="transaction_detail_title">Detalle de movimiento</string>
+    <string name="bitcoin_holding_detail_title">Detalle de operación Bitcoin</string>
+    <string name="detail_category">Categoría</string>
+    <string name="detail_account">Cuenta</string>
+    <string name="detail_amount">Monto</string>
+    <string name="detail_date">Fecha</string>
+    <string name="detail_note">Nota</string>
+    <string name="detail_sats">Satoshis</string>
+    <string name="detail_fiat_price">Precio fiat</string>
+    <string name="detail_platform">Plataforma</string>
+    <string name="detail_commission">Comisión</string>
+    <string name="detail_type">Tipo</string>
+    <string name="action_delete">Eliminar</string>
+    <string name="detail_no_note">Sin nota</string>
+    <string name="detail_delete_confirm_title">Eliminar movimiento</string>
+    <string name="detail_delete_confirm_message">¿Estás seguro? Se revertirá el saldo automáticamente.</string>
+    <string name="detail_type_buy">Compra</string>
+    <string name="detail_type_sell">Venta</string>
+    <string name="detail_deleted">Movimiento eliminado</string>
 </resources>
