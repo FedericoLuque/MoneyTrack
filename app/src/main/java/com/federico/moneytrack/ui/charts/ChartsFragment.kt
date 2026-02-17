@@ -2,6 +2,7 @@ package com.federico.moneytrack.ui.charts
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +22,10 @@ import com.patrykandpatrick.vico.core.cartesian.data.columnSeries
 import com.patrykandpatrick.vico.core.cartesian.layer.ColumnCartesianLayer
 import com.patrykandpatrick.vico.core.common.Fill
 import com.patrykandpatrick.vico.core.common.component.LineComponent
+import com.patrykandpatrick.vico.core.cartesian.Zoom
 import com.patrykandpatrick.vico.core.common.component.TextComponent
+import com.patrykandpatrick.vico.views.cartesian.ScrollHandler
+import com.patrykandpatrick.vico.views.cartesian.ZoomHandler
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -67,10 +71,17 @@ class ChartsFragment : Fragment() {
         }
     }
 
+    private fun getThemeTextColor(): Int {
+        val typedValue = TypedValue()
+        requireContext().theme.resolveAttribute(android.R.attr.textColorPrimary, typedValue, true)
+        return requireContext().getColorStateList(typedValue.resourceId).defaultColor
+    }
+
     private fun setupCashFlowChart() {
         val incomeColor = Color.parseColor("#4CAF50")
         val expenseColor = Color.parseColor("#F44336")
         val axisColor = Color.GRAY
+        val textColor = getThemeTextColor()
 
         val columnLayer = ColumnCartesianLayer(
             columnProvider = ColumnCartesianLayer.ColumnProvider.series(
@@ -80,7 +91,7 @@ class ChartsFragment : Fragment() {
             mergeMode = { ColumnCartesianLayer.MergeMode.Grouped() }
         )
 
-        val axisLabel = TextComponent(textSizeSp = 10f)
+        val axisLabel = TextComponent(color = textColor, textSizeSp = 10f)
         val axisLine = LineComponent(Fill(axisColor), thicknessDp = 1f)
         val axisTick = LineComponent(Fill(axisColor), thicknessDp = 1f)
 
@@ -101,6 +112,11 @@ class ChartsFragment : Fragment() {
             tickLengthDp = 4f
         )
 
+        binding.chartCashFlow.scrollHandler = ScrollHandler(scrollEnabled = false)
+        binding.chartCashFlow.zoomHandler = ZoomHandler(
+            zoomEnabled = false,
+            initialZoom = Zoom.Content
+        )
         binding.chartCashFlow.chart = CartesianChart(
             columnLayer,
             startAxis = startAxis,
@@ -127,6 +143,7 @@ class ChartsFragment : Fragment() {
         val fiatColor = Color.parseColor("#2196F3")
         val btcColor = Color.parseColor("#F7931A")
         val axisColor = Color.GRAY
+        val textColor = getThemeTextColor()
 
         val columnLayer = ColumnCartesianLayer(
             columnProvider = ColumnCartesianLayer.ColumnProvider.series(
@@ -136,7 +153,7 @@ class ChartsFragment : Fragment() {
             mergeMode = { ColumnCartesianLayer.MergeMode.Stacked }
         )
 
-        val axisLabel = TextComponent(textSizeSp = 12f)
+        val axisLabel = TextComponent(color = textColor, textSizeSp = 12f)
         val axisLine = LineComponent(Fill(axisColor), thicknessDp = 1f)
         val axisTick = LineComponent(Fill(axisColor), thicknessDp = 1f)
 
