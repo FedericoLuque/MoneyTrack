@@ -13,6 +13,10 @@ navigation = "2.7.6"
 lifecycle = "2.7.0"
 ksp = "2.1.0-1.0.29"
 vico = "2.1.3"
+junit = "4.13.2"
+mockito = "5.7.0"
+mockitoKotlin = "5.2.1"
+coroutinesTest = "1.7.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -46,6 +50,12 @@ vico-views = { group = "com.patrykandpatrick.vico", name = "views", version.ref 
 # Lifecycle
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycle" }
+
+# Test
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutinesTest" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

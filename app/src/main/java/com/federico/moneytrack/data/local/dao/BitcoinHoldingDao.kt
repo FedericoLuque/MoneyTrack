@@ -23,6 +23,9 @@ interface BitcoinHoldingDao {
     @Delete
     suspend fun deleteBitcoinHolding(holding: BitcoinHolding)
 
+    @Query("SELECT COALESCE(SUM(sats_amount), 0) FROM bitcoin_holdings")
+    suspend fun getTotalSats(): Long
+
     @Query("DELETE FROM bitcoin_holdings")
     suspend fun deleteAll()
 
