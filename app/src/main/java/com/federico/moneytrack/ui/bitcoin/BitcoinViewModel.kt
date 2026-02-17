@@ -50,7 +50,9 @@ class BitcoinViewModel @Inject constructor(
         fiatAmount: Double,
         accountId: Long,
         isBuy: Boolean,
-        note: String?
+        note: String?,
+        platform: String? = null,
+        commission: Double = 0.0
     ) {
         viewModelScope.launch {
             try {
@@ -63,7 +65,9 @@ class BitcoinViewModel @Inject constructor(
                     accountId = accountId,
                     isBuy = isBuy,
                     price = impliedPrice,
-                    note = note
+                    note = note,
+                    platform = platform,
+                    commission = commission
                 )
                 _eventFlow.emit(UiEvent.TransactionSuccess)
             } catch (e: Exception) {

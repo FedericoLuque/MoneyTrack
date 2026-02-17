@@ -15,7 +15,7 @@ import com.federico.moneytrack.data.local.entity.*
         Transaction::class,
         BitcoinHolding::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -29,6 +29,13 @@ abstract class AppDatabase : RoomDatabase() {
         val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL("ALTER TABLE bitcoin_holdings ADD COLUMN transaction_id INTEGER DEFAULT NULL")
+            }
+        }
+
+        val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE bitcoin_holdings ADD COLUMN platform TEXT DEFAULT NULL")
+                db.execSQL("ALTER TABLE bitcoin_holdings ADD COLUMN commission REAL NOT NULL DEFAULT 0.0")
             }
         }
     }

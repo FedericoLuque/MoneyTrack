@@ -74,7 +74,9 @@ class BitcoinRepositoryImpl @Inject constructor(
             satsAmount = satsAmount,
             lastFiatPrice = lastFiatPrice,
             lastUpdate = lastUpdate,
-            transactionId = transactionId
+            transactionId = transactionId,
+            platform = platform,
+            commission = commission
         )
     }
 
@@ -84,7 +86,9 @@ class BitcoinRepositoryImpl @Inject constructor(
             satsAmount = satsAmount,
             lastFiatPrice = lastFiatPrice,
             lastUpdate = lastUpdate,
-            transactionId = transactionId
+            transactionId = transactionId,
+            platform = platform,
+            commission = commission
         )
     }
 }

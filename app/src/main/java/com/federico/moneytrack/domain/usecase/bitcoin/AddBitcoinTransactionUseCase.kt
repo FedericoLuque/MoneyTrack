@@ -28,7 +28,9 @@ class AddBitcoinTransactionUseCase @Inject constructor(
         accountId: Long,
         isBuy: Boolean,
         price: Double,
-        note: String?
+        note: String?,
+        platform: String? = null,
+        commission: Double = 0.0
     ) {
         // 1. Obtener la cuenta fiat y validar saldo
         val account = accountRepository.getAccountById(accountId)
@@ -58,7 +60,10 @@ class AddBitcoinTransactionUseCase @Inject constructor(
         // 3. Registrar la transacción Fiat para historial
         val btcCategory = categoryRepository.getCategoryByTransactionType("BITCOIN")
         val defaultNote = if (isBuy) "Compra Bitcoin ($satsAmount sats)" else "Venta Bitcoin ($satsAmount sats)"
-        val finalNote = if (!note.isNullOrBlank()) "$defaultNote - $note" else defaultNote
+        val platformNote = if (!platform.isNullOrBlank()) " en $platform" else ""
+        val commissionNote = if (commission > 0) " (comisión: ${"%.2f".format(commission)}%)" else ""
+        val userNote = if (!note.isNullOrBlank()) " - $note" else ""
+        val finalNote = "$defaultNote$platformNote$commissionNote$userNote"
 
         val transaction = Transaction(
             accountId = accountId,
@@ -76,7 +81,9 @@ class AddBitcoinTransactionUseCase @Inject constructor(
             satsAmount = finalSats,
             lastFiatPrice = price,
             lastUpdate = System.currentTimeMillis(),
-            transactionId = transactionId
+            transactionId = transactionId,
+            platform = platform,
+            commission = commission
         )
         bitcoinRepository.insertBitcoinHolding(holding)
     }

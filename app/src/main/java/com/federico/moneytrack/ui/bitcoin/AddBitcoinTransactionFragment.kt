@@ -87,7 +87,9 @@ class AddBitcoinTransactionFragment : Fragment() {
         val satsStr = binding.etSats.text.toString()
         val fiatStr = binding.etFiat.text.toString()
         val note = binding.etNote.text.toString()
-        
+        val platform = binding.etPlatform.text.toString().ifBlank { null }
+        val commission = binding.etCommission.text.toString().toDoubleOrNull() ?: 0.0
+
         val sats = satsStr.toLongOrNull() ?: 0L
         val fiat = fiatStr.toDoubleOrNull() ?: 0.0
 
@@ -106,7 +108,9 @@ class AddBitcoinTransactionFragment : Fragment() {
             fiatAmount = fiat,
             accountId = selectedAccountId!!,
             isBuy = isBuy,
-            note = note
+            note = note,
+            platform = platform,
+            commission = commission
         )
     }
 

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.federico.moneytrack.databinding.ItemBitcoinHoldingBinding
 import com.federico.moneytrack.domain.model.BitcoinHolding
+import android.view.View
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -43,6 +44,18 @@ class BitcoinHoldingAdapter(
             val satsText = if (isBuy) "+${satsFormat.format(item.satsAmount)} sats" else "${satsFormat.format(item.satsAmount)} sats"
             binding.tvSats.text = satsText
             binding.tvSats.setTextColor(if (isBuy) Color.parseColor("#4CAF50") else Color.parseColor("#F44336"))
+
+            val platformParts = mutableListOf<String>()
+            if (!item.platform.isNullOrBlank()) platformParts.add(item.platform)
+            if (item.commission > 0) {
+                platformParts.add("Comisión: ${"%.2f".format(item.commission)}%")
+            }
+            if (platformParts.isNotEmpty()) {
+                binding.tvPlatform.text = platformParts.joinToString(" · ")
+                binding.tvPlatform.visibility = View.VISIBLE
+            } else {
+                binding.tvPlatform.visibility = View.GONE
+            }
         }
     }
 

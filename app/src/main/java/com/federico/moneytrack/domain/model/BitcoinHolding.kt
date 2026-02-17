@@ -5,5 +5,7 @@ data class BitcoinHolding(
     val satsAmount: Long,
     val lastFiatPrice: Double,
     val lastUpdate: Long,
-    val transactionId: Long? = null
+    val transactionId: Long? = null,
+    val platform: String? = null,
+    val commission: Double = 0.0
 )
