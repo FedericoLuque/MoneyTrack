@@ -8,12 +8,15 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.federico.moneytrack.databinding.ItemBitcoinHoldingBinding
 import com.federico.moneytrack.domain.model.BitcoinHolding
+import android.view.View
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class BitcoinHoldingAdapter : ListAdapter<BitcoinHolding, BitcoinHoldingAdapter.HoldingViewHolder>(DiffCallback) {
+class BitcoinHoldingAdapter(
+    private val onItemClick: ((BitcoinHolding) -> Unit)? = null
+) : ListAdapter<BitcoinHolding, BitcoinHoldingAdapter.HoldingViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HoldingViewHolder {
         val binding = ItemBitcoinHoldingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -21,7 +24,9 @@ class BitcoinHoldingAdapter : ListAdapter<BitcoinHolding, BitcoinHoldingAdapter.
     }
 
     override fun onBindViewHolder(holder: HoldingViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val item = getItem(position)
+        holder.bind(item)
+        holder.itemView.setOnClickListener { onItemClick?.invoke(item) }
     }
 
     class HoldingViewHolder(
@@ -39,6 +44,18 @@ class BitcoinHoldingAdapter : ListAdapter<BitcoinHolding, BitcoinHoldingAdapter.
             val satsText = if (isBuy) "+${satsFormat.format(item.satsAmount)} sats" else "${satsFormat.format(item.satsAmount)} sats"
             binding.tvSats.text = satsText
             binding.tvSats.setTextColor(if (isBuy) Color.parseColor("#4CAF50") else Color.parseColor("#F44336"))
+
+            val platformParts = mutableListOf<String>()
+            if (!item.platform.isNullOrBlank()) platformParts.add(item.platform)
+            if (item.commission > 0) {
+                platformParts.add("Comisión: ${"%.2f".format(item.commission)}%")
+            }
+            if (platformParts.isNotEmpty()) {
+                binding.tvPlatform.text = platformParts.joinToString(" · ")
+                binding.tvPlatform.visibility = View.VISIBLE
+            } else {
+                binding.tvPlatform.visibility = View.GONE
+            }
         }
     }
 

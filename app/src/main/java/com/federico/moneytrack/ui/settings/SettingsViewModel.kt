@@ -37,6 +37,15 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun deleteAllData() {
+        _uiState.value = SettingsUiState.Deleting
+        viewModelScope.launch {
+            csvBackupManager.deleteAllData()
+                .onSuccess { _uiState.value = SettingsUiState.Success(SuccessType.DELETE) }
+                .onFailure { _uiState.value = SettingsUiState.Error(it.message ?: "Error desconocido", ErrorType.DELETE) }
+        }
+    }
+
     fun clearState() {
         _uiState.value = SettingsUiState.Idle
     }
@@ -46,9 +55,10 @@ sealed class SettingsUiState {
     data object Idle : SettingsUiState()
     data object Exporting : SettingsUiState()
     data object Importing : SettingsUiState()
+    data object Deleting : SettingsUiState()
     data class Success(val type: SuccessType, val recordCount: Int = 0) : SettingsUiState()
     data class Error(val message: String, val type: ErrorType) : SettingsUiState()
 }
 
-enum class SuccessType { EXPORT, IMPORT }
-enum class ErrorType { EXPORT, IMPORT }
+enum class SuccessType { EXPORT, IMPORT, DELETE }
+enum class ErrorType { EXPORT, IMPORT, DELETE }

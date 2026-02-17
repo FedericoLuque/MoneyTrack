@@ -2,8 +2,8 @@ package com.federico.moneytrack.ui.transaction
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.federico.moneytrack.domain.model.Transaction
 import com.federico.moneytrack.domain.model.TransactionWithCategory
+import com.federico.moneytrack.domain.repository.BitcoinRepository
 import com.federico.moneytrack.domain.repository.TransactionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -16,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TransactionsViewModel @Inject constructor(
-    private val transactionRepository: TransactionRepository
+    transactionRepository: TransactionRepository,
+    private val bitcoinRepository: BitcoinRepository
 ) : ViewModel() {
 
     val transactions: StateFlow<List<TransactionWithCategory>> = transactionRepository.getAllTransactionsWithCategory()
@@ -25,23 +26,26 @@ class TransactionsViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow: SharedFlow<UiEvent> = _eventFlow
 
-    fun deleteTransaction(transaction: Transaction) {
-        viewModelScope.launch {
-            try {
-                // TODO: Aquí deberíamos actualizar el saldo de la cuenta implicada (sumar lo gastado o restar lo ingresado).
-                // Por ahora solo borramos el registro para no complicar en exceso esta iteración.
-                // Idealmente usaríamos un DeleteTransactionUseCase que revierta el saldo.
-                
-                transactionRepository.deleteTransaction(transaction)
-                _eventFlow.emit(UiEvent.DeleteSuccess)
-            } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.Error(e.message ?: "Error al eliminar"))
+    fun onTransactionClicked(item: TransactionWithCategory) {
+        val categoryType = item.category?.transactionType
+        if (categoryType == "BITCOIN") {
+            viewModelScope.launch {
+                val holding = bitcoinRepository.getHoldingByTransactionId(item.transaction.id)
+                if (holding != null) {
+                    _eventFlow.emit(UiEvent.NavigateToBitcoinDetail(holding.id))
+                } else {
+                    _eventFlow.emit(UiEvent.NavigateToTransactionDetail(item.transaction.id))
+                }
+            }
+        } else {
+            viewModelScope.launch {
+                _eventFlow.emit(UiEvent.NavigateToTransactionDetail(item.transaction.id))
             }
         }
     }
 
     sealed class UiEvent {
-        object DeleteSuccess : UiEvent()
-        data class Error(val message: String) : UiEvent()
+        data class NavigateToTransactionDetail(val transactionId: Long) : UiEvent()
+        data class NavigateToBitcoinDetail(val holdingId: Long) : UiEvent()
     }
 }

@@ -13,5 +13,11 @@ data class BitcoinHolding(
     @ColumnInfo(name = "last_fiat_price")
     val lastFiatPrice: Double,
     @ColumnInfo(name = "last_update")
-    val lastUpdate: Long
+    val lastUpdate: Long,
+    @ColumnInfo(name = "transaction_id")
+    val transactionId: Long? = null,
+    @ColumnInfo(name = "platform")
+    val platform: String? = null,
+    @ColumnInfo(name = "commission")
+    val commission: Double = 0.0
 )
