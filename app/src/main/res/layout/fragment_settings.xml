@@ -114,6 +114,44 @@
                 android:textColor="?android:attr/textColorSecondary"
                 android:textSize="12sp" />
 
+            <!-- Separador -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:background="?android:attr/listDivider" />
+
+            <!-- Sección Zona de peligro -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_section_danger"
+                android:textColor="#D32F2F"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDeleteAll"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/settings_delete_all"
+                android:textColor="#D32F2F"
+                android:textSize="16sp"
+                app:icon="@android:drawable/ic_menu_delete"
+                app:iconTint="#D32F2F"
+                app:strokeColor="#D32F2F" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/settings_delete_all_warning"
+                android:textColor="#D32F2F"
+                android:textSize="12sp" />
+
         </LinearLayout>
 
     </ScrollView>

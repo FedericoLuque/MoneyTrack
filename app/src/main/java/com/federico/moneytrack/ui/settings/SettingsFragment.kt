@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.federico.moneytrack.R
 import com.federico.moneytrack.databinding.FragmentSettingsBinding
 import com.federico.moneytrack.util.ThemeManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -85,6 +86,18 @@ class SettingsFragment : Fragment() {
             importLauncher.launch(arrayOf("text/*"))
         }
 
+        // Borrar todos los datos
+        binding.btnDeleteAll.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.settings_delete_all_dialog_title)
+                .setMessage(R.string.settings_delete_all_dialog_message)
+                .setNegativeButton(R.string.settings_delete_all_cancel, null)
+                .setPositiveButton(R.string.settings_delete_all_confirm) { _, _ ->
+                    viewModel.deleteAllData()
+                }
+                .show()
+        }
+
         // Observar estado
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -93,17 +106,26 @@ class SettingsFragment : Fragment() {
                         is SettingsUiState.Exporting -> {
                             binding.btnExport.isEnabled = false
                             binding.btnImport.isEnabled = false
+                            binding.btnDeleteAll.isEnabled = false
                         }
                         is SettingsUiState.Importing -> {
                             binding.btnExport.isEnabled = false
                             binding.btnImport.isEnabled = false
+                            binding.btnDeleteAll.isEnabled = false
+                        }
+                        is SettingsUiState.Deleting -> {
+                            binding.btnExport.isEnabled = false
+                            binding.btnImport.isEnabled = false
+                            binding.btnDeleteAll.isEnabled = false
                         }
                         is SettingsUiState.Success -> {
                             binding.btnExport.isEnabled = true
                             binding.btnImport.isEnabled = true
+                            binding.btnDeleteAll.isEnabled = true
                             val msg = when (state.type) {
                                 SuccessType.EXPORT -> getString(R.string.settings_export_success)
                                 SuccessType.IMPORT -> getString(R.string.settings_import_success, state.recordCount)
+                                SuccessType.DELETE -> getString(R.string.settings_delete_all_success)
                             }
                             Snackbar.make(binding.root, msg, Snackbar.LENGTH_LONG).show()
                             viewModel.clearState()
@@ -111,9 +133,11 @@ class SettingsFragment : Fragment() {
                         is SettingsUiState.Error -> {
                             binding.btnExport.isEnabled = true
                             binding.btnImport.isEnabled = true
+                            binding.btnDeleteAll.isEnabled = true
                             val msg = when (state.type) {
                                 ErrorType.EXPORT -> getString(R.string.settings_export_error, state.message)
                                 ErrorType.IMPORT -> getString(R.string.settings_import_error, state.message)
+                                ErrorType.DELETE -> getString(R.string.settings_delete_all_error, state.message)
                             }
                             Snackbar.make(binding.root, msg, Snackbar.LENGTH_LONG).show()
                             viewModel.clearState()
@@ -121,6 +145,7 @@ class SettingsFragment : Fragment() {
                         is SettingsUiState.Idle -> {
                             binding.btnExport.isEnabled = true
                             binding.btnImport.isEnabled = true
+                            binding.btnDeleteAll.isEnabled = true
                         }
                     }
                 }

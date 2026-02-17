@@ -65,4 +65,13 @@
     <string name="settings_import_success">Datos importados correctamente: %d registros</string>
     <string name="settings_export_error">Error al exportar: %s</string>
     <string name="settings_import_error">Error al importar: %s</string>
+    <string name="settings_section_danger">Zona de peligro</string>
+    <string name="settings_delete_all">Borrar todos los datos</string>
+    <string name="settings_delete_all_warning">Esta acción no se puede deshacer</string>
+    <string name="settings_delete_all_dialog_title">¿Borrar todos los datos?</string>
+    <string name="settings_delete_all_dialog_message">Se borrarán todas las cuentas, categorías, transacciones, presupuestos y tenencias de Bitcoin de forma irreversible.</string>
+    <string name="settings_delete_all_confirm">Borrar todo</string>
+    <string name="settings_delete_all_cancel">Cancelar</string>
+    <string name="settings_delete_all_success">Todos los datos han sido borrados</string>
+    <string name="settings_delete_all_error">Error al borrar datos: %s</string>
 </resources>
