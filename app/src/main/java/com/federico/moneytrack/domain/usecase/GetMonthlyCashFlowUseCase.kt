@@ -37,9 +37,10 @@ class GetMonthlyCashFlowUseCase @Inject constructor(
 
         return transactionRepository.getTransactionsByDateRange(startDate, endDate).map { transactions ->
             // Crear mapa con todos los días del mes con valores iniciales en 0
-            val dailyMap = linkedMapOf<Int, Pair<Double, Double>>()
+            // Triple: (income, expense, bitcoin)
+            val dailyMap = linkedMapOf<Int, Triple<Double, Double, Double>>()
             for (day in 1..daysInMonth) {
-                dailyMap[day] = Pair(0.0, 0.0)
+                dailyMap[day] = Triple(0.0, 0.0, 0.0)
             }
 
             // Agrupar transacciones por día del mes
@@ -48,12 +49,12 @@ class GetMonthlyCashFlowUseCase @Inject constructor(
                 txCal.timeInMillis = twc.transaction.date
                 val dayOfMonth = txCal.get(Calendar.DAY_OF_MONTH)
 
-                val current = dailyMap[dayOfMonth] ?: Pair(0.0, 0.0)
-                val isIncome = twc.category?.transactionType == "INCOME"
-                dailyMap[dayOfMonth] = if (isIncome) {
-                    Pair(current.first + twc.transaction.amount, current.second)
-                } else {
-                    Pair(current.first, current.second + twc.transaction.amount)
+                val current = dailyMap[dayOfMonth] ?: Triple(0.0, 0.0, 0.0)
+                val type = twc.category?.transactionType
+                dailyMap[dayOfMonth] = when (type) {
+                    "INCOME" -> Triple(current.first + twc.transaction.amount, current.second, current.third)
+                    "BITCOIN" -> Triple(current.first, current.second, current.third + Math.abs(twc.transaction.amount))
+                    else -> Triple(current.first, current.second + twc.transaction.amount, current.third)
                 }
             }
 
@@ -61,7 +62,8 @@ class GetMonthlyCashFlowUseCase @Inject constructor(
                 DailyCashFlow(
                     dayLabel = day.toString(),
                     incomeAmount = amounts.first,
-                    expenseAmount = amounts.second
+                    expenseAmount = amounts.second,
+                    bitcoinAmount = amounts.third
                 )
             }
         }

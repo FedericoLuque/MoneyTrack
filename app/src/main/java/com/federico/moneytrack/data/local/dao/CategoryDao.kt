@@ -26,6 +26,12 @@ interface CategoryDao {
     @Delete
     suspend fun deleteCategory(category: Category)
 
+    @Query("SELECT * FROM categories WHERE transaction_type = :type LIMIT 1")
+    suspend fun getCategoryByTransactionType(type: String): Category?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertCategoryReturnId(category: Category): Long
+
     @Query("SELECT COUNT(*) FROM categories")
     suspend fun getCategoryCount(): Int
 

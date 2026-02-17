@@ -2,13 +2,15 @@ package com.federico.moneytrack.data.local
 
 import com.federico.moneytrack.data.local.dao.AccountDao
 import com.federico.moneytrack.data.local.dao.CategoryDao
+import com.federico.moneytrack.data.local.dao.TransactionDao
 import com.federico.moneytrack.data.local.entity.Account
 import com.federico.moneytrack.data.local.entity.Category
 import javax.inject.Inject
 
 class DataSeeder @Inject constructor(
     private val accountDao: AccountDao,
-    private val categoryDao: CategoryDao
+    private val categoryDao: CategoryDao,
+    private val transactionDao: TransactionDao
 ) {
     suspend fun seedIfEmpty() {
         if (accountDao.getAccountCount() == 0) {
@@ -17,6 +19,24 @@ class DataSeeder @Inject constructor(
         if (categoryDao.getCategoryCount() == 0) {
             seedCategories()
         }
+        ensureBitcoinCategory()
+    }
+
+    private suspend fun ensureBitcoinCategory() {
+        val existing = categoryDao.getCategoryByTransactionType("BITCOIN")
+        val categoryId = if (existing != null) {
+            existing.id
+        } else {
+            categoryDao.insertCategoryReturnId(
+                Category(
+                    name = "Bitcoin",
+                    iconName = "ic_bitcoin",
+                    colorHex = "#EF6C00",
+                    transactionType = "BITCOIN"
+                )
+            )
+        }
+        transactionDao.updateNullCategoryTransactions(categoryId)
     }
 
     private suspend fun seedAccounts() {

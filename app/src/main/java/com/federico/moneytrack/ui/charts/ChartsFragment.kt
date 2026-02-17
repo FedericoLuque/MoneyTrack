@@ -80,13 +80,15 @@ class ChartsFragment : Fragment() {
     private fun setupCashFlowChart() {
         val incomeColor = Color.parseColor("#4CAF50")
         val expenseColor = Color.parseColor("#F44336")
+        val bitcoinColor = Color.parseColor("#EF6C00")
         val axisColor = Color.GRAY
         val textColor = getThemeTextColor()
 
         val columnLayer = ColumnCartesianLayer(
             columnProvider = ColumnCartesianLayer.ColumnProvider.series(
                 LineComponent(Fill(incomeColor), thicknessDp = 8f),
-                LineComponent(Fill(expenseColor), thicknessDp = 8f)
+                LineComponent(Fill(expenseColor), thicknessDp = 8f),
+                LineComponent(Fill(bitcoinColor), thicknessDp = 8f)
             ),
             mergeMode = { ColumnCartesianLayer.MergeMode.Grouped() }
         )
@@ -130,18 +132,20 @@ class ChartsFragment : Fragment() {
         cashFlowDayLabels = state.monthlyCashFlow.map { it.dayLabel }
         val incomes = state.monthlyCashFlow.map { it.incomeAmount }
         val expenses = state.monthlyCashFlow.map { it.expenseAmount }
+        val bitcoin = state.monthlyCashFlow.map { it.bitcoinAmount }
 
         cashFlowProducer.runTransaction {
             columnSeries {
                 series(incomes)
                 series(expenses)
+                series(bitcoin)
             }
         }
     }
 
     private fun setupPatrimonyChart() {
         val fiatColor = Color.parseColor("#2196F3")
-        val btcColor = Color.parseColor("#F7931A")
+        val btcColor = Color.parseColor("#EF6C00")
         val axisColor = Color.GRAY
         val textColor = getThemeTextColor()
 

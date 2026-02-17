@@ -75,6 +75,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/legend_expense"
+                        android:textSize="12sp"
+                        android:layout_marginEnd="16dp" />
+
+                    <View
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:background="#EF6C00"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="4dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/legend_bitcoin"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -133,7 +147,7 @@
                     <View
                         android:layout_width="12dp"
                         android:layout_height="12dp"
-                        android:background="#F7931A"
+                        android:background="#EF6C00"
                         android:layout_gravity="center_vertical"
                         android:layout_marginEnd="4dp" />
 
