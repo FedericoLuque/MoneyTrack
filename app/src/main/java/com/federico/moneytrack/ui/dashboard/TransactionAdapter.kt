@@ -62,15 +62,15 @@ class TransactionAdapter(
 
             // Category Icon/Color
             if (category != null) {
-                binding.tvCategoryIcon.text = category.name.firstOrNull()?.toString()?.uppercase() ?: "?"
+                binding.tvCategoryIcon.text = category.name.firstOrNull()?.toString()?.uppercase() ?: "₿"
                 try {
                     binding.tvCategoryIcon.backgroundTintList = ColorStateList.valueOf(Color.parseColor(category.colorHex))
                 } catch (e: Exception) {
                     binding.tvCategoryIcon.backgroundTintList = ColorStateList.valueOf(Color.GRAY)
                 }
             } else {
-                binding.tvCategoryIcon.text = "?"
-                binding.tvCategoryIcon.backgroundTintList = ColorStateList.valueOf(Color.GRAY)
+                binding.tvCategoryIcon.text = "₿"
+                binding.tvCategoryIcon.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#F7931A"))
             }
         }
     }
