@@ -17,10 +17,10 @@
             android:text="@string/title_charts"
             android:textSize="28sp"
             android:textStyle="bold"
-            android:textColor="@android:color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:layout_marginBottom="16dp" />
 
-        <!-- Flujo de Caja Semanal -->
+        <!-- Flujo de Caja Mensual -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
                     android:text="@string/chart_weekly_cash_flow"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@android:color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:layout_marginBottom="8dp" />
 
                 <!-- Leyenda -->
@@ -75,6 +75,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/legend_expense"
+                        android:textSize="12sp"
+                        android:layout_marginEnd="16dp" />
+
+                    <View
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:background="#EF6C00"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="4dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/legend_bitcoin"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -106,7 +120,7 @@
                     android:text="@string/chart_patrimony_composition"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@android:color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:layout_marginBottom="8dp" />
 
                 <!-- Leyenda -->
@@ -133,7 +147,7 @@
                     <View
                         android:layout_width="12dp"
                         android:layout_height="12dp"
-                        android:background="#F7931A"
+                        android:background="#EF6C00"
                         android:layout_gravity="center_vertical"
                         android:layout_marginEnd="4dp" />
 
