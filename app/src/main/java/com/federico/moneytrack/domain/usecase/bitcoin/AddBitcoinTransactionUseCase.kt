@@ -61,7 +61,7 @@ class AddBitcoinTransactionUseCase @Inject constructor(
         val transaction = Transaction(
             accountId = accountId,
             categoryId = null,
-            amount = fiatAmount, // Guardamos el valor absoluto
+            amount = if (isBuy) -fiatAmount else fiatAmount,
             date = System.currentTimeMillis(),
             note = finalNote
         )
