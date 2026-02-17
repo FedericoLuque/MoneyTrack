@@ -23,7 +23,7 @@ class ChartsViewModel @Inject constructor(
     val uiState: StateFlow<ChartsUiState> = combine(
         getWeeklyCashFlowUseCase(),
         accountRepository.getAllAccounts(),
-        getBitcoinValueUseCase("usd")
+        getBitcoinValueUseCase("eur")
     ) { weeklyCashFlow, accounts, btcValue ->
         val fiatBalance = accounts.sumOf { it.currentBalance }
         ChartsUiState.Success(

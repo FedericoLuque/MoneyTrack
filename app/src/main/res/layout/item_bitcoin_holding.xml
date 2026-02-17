@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
@@ -15,12 +14,13 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/tvCategoryIcon"
+            android:id="@+id/tvIcon"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@drawable/circle_background"
+            android:backgroundTint="#F7931A"
             android:gravity="center"
-            android:text="C"
+            android:text="₿"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -28,20 +28,17 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tvNote"
+            android:id="@+id/tvType"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="Nota de la transacción"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/tvDate"
-            app:layout_constraintEnd_toStartOf="@id/tvAmount"
-            app:layout_constraintStart_toEndOf="@id/tvCategoryIcon"
+            app:layout_constraintEnd_toStartOf="@id/tvSats"
+            app:layout_constraintStart_toEndOf="@id/tvIcon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed" />
 
@@ -49,19 +46,16 @@
             android:id="@+id/tvDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="01 Ene 2026"
             android:textColor="?android:attr/textColorSecondary"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@id/tvNote"
-            app:layout_constraintTop_toBottomOf="@id/tvNote" />
+            app:layout_constraintStart_toStartOf="@id/tvType"
+            app:layout_constraintTop_toBottomOf="@id/tvType" />
 
         <TextView
-            android:id="@+id/tvAmount"
+            android:id="@+id/tvSats"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="-€50,00"
-            android:textColor="#D32F2F"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"

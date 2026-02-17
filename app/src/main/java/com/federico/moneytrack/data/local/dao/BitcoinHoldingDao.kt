@@ -22,4 +22,10 @@ interface BitcoinHoldingDao {
 
     @Delete
     suspend fun deleteBitcoinHolding(holding: BitcoinHolding)
+
+    @Query("DELETE FROM bitcoin_holdings")
+    suspend fun deleteAll()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(holdings: List<BitcoinHolding>)
 }

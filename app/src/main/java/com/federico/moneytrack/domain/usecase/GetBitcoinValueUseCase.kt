@@ -10,10 +10,10 @@ class GetBitcoinValueUseCase @Inject constructor(
     private val repository: BitcoinRepository
 ) {
     /**
-     * Devuelve el valor total de los satoshis en la moneda especificada (por defecto USD).
+     * Devuelve el valor total de los satoshis en la moneda especificada (por defecto EUR).
      * Emite el valor calculado.
      */
-    operator fun invoke(currency: String = "usd"): Flow<Double> = flow {
+    operator fun invoke(currency: String = "eur"): Flow<Double> = flow {
         // 1. Obtener precio actual
         val price = try {
             repository.getBitcoinPrice(currency)

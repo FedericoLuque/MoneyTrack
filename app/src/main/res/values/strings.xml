@@ -34,6 +34,8 @@
     <string name="label_sats_amount">Cantidad (Sats)</string>
     <string name="label_fiat_amount">Cantidad (Fiat)</string>
     <string name="msg_btc_transaction_saved">Operación registrada</string>
+    <string name="bitcoin_operations_title">Operaciones</string>
+    <string name="bitcoin_no_operations">No hay operaciones registradas</string>
     <string name="title_categories">Categorías</string>
     <string name="action_add_category">Nueva Categoría</string>
     <string name="label_category_name">Nombre de la categoría</string>
@@ -42,6 +44,11 @@
     <string name="type_expense">Gasto</string>
     <string name="msg_category_saved">Categoría guardada</string>
     <string name="action_manage_categories">Gestionar Categorías</string>
+    <string name="action_settings">Configuración</string>
+    <string name="settings_title">Configuración</string>
+    <string name="settings_theme">Tema</string>
+    <string name="theme_light">Claro</string>
+    <string name="theme_dark">Oscuro</string>
     <string name="title_charts">Gráficos</string>
     <string name="chart_weekly_cash_flow">Flujo de Caja Semanal</string>
     <string name="chart_patrimony_composition">Composición de Patrimonio</string>
@@ -49,4 +56,13 @@
     <string name="legend_expense">Gastos</string>
     <string name="legend_fiat">Fiat</string>
     <string name="legend_bitcoin">Bitcoin</string>
+    <string name="settings_section_appearance">Apariencia</string>
+    <string name="settings_section_data">Datos</string>
+    <string name="settings_export_csv">Exportar datos (CSV)</string>
+    <string name="settings_import_csv">Importar datos (CSV)</string>
+    <string name="settings_import_warning">La importación eliminará todos los datos existentes</string>
+    <string name="settings_export_success">Datos exportados correctamente</string>
+    <string name="settings_import_success">Datos importados correctamente: %d registros</string>
+    <string name="settings_export_error">Error al exportar: %s</string>
+    <string name="settings_import_error">Error al importar: %s</string>
 </resources>

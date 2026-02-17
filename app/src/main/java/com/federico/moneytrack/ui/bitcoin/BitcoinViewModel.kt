@@ -30,12 +30,13 @@ class BitcoinViewModel @Inject constructor(
 
     val uiState: StateFlow<BitcoinUiState> = combine(
         bitcoinRepository.getBitcoinHoldings(),
-        getBitcoinValueUseCase("usd")
+        getBitcoinValueUseCase("eur")
     ) { holdings, fiatValue ->
         val totalSats = holdings.sumOf { it.satsAmount }
         BitcoinUiState(
             totalSats = totalSats,
-            fiatValue = fiatValue
+            fiatValue = fiatValue,
+            holdings = holdings.sortedByDescending { it.lastUpdate }
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), BitcoinUiState())
 
@@ -71,7 +72,8 @@ class BitcoinViewModel @Inject constructor(
 
     data class BitcoinUiState(
         val totalSats: Long = 0,
-        val fiatValue: Double = 0.0
+        val fiatValue: Double = 0.0,
+        val holdings: List<com.federico.moneytrack.domain.model.BitcoinHolding> = emptyList()
     )
 
     sealed class UiEvent {

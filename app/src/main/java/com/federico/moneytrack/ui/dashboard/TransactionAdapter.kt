@@ -41,7 +41,7 @@ class TransactionAdapter(
             val transaction = item.transaction
             val category = item.category
             
-            val currencyFormat = NumberFormat.getCurrencyInstance(Locale.getDefault())
+            val currencyFormat = NumberFormat.getCurrencyInstance(Locale("es", "ES"))
             val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
 
             binding.tvNote.text = transaction.note ?: "Sin nota"
@@ -54,7 +54,7 @@ class TransactionAdapter(
             // Asumimos que category.transactionType nos da la pista, o si category es null (ej Bitcoin), miramos el contexto.
             // Por simplicidad, si la categoría es INCOME -> Verde. Si es EXPENSE -> Rojo.
             
-            val isIncome = category?.transactionType == "INCOME"
+            val isIncome = if (category != null) category.transactionType == "INCOME" else transaction.amount >= 0
             val color = if (isIncome) Color.parseColor("#4CAF50") else Color.parseColor("#F44336")
             
             binding.tvAmount.setTextColor(color)
@@ -62,15 +62,15 @@ class TransactionAdapter(
 
             // Category Icon/Color
             if (category != null) {
-                binding.tvCategoryIcon.text = category.name.firstOrNull()?.toString()?.uppercase() ?: "?"
+                binding.tvCategoryIcon.text = category.name.firstOrNull()?.toString()?.uppercase() ?: "₿"
                 try {
                     binding.tvCategoryIcon.backgroundTintList = ColorStateList.valueOf(Color.parseColor(category.colorHex))
                 } catch (e: Exception) {
                     binding.tvCategoryIcon.backgroundTintList = ColorStateList.valueOf(Color.GRAY)
                 }
             } else {
-                binding.tvCategoryIcon.text = "?"
-                binding.tvCategoryIcon.backgroundTintList = ColorStateList.valueOf(Color.GRAY)
+                binding.tvCategoryIcon.text = "₿"
+                binding.tvCategoryIcon.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#F7931A"))
             }
         }
     }
