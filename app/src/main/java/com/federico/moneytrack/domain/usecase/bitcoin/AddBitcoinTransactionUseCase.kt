@@ -5,13 +5,15 @@ import com.federico.moneytrack.domain.model.BitcoinHolding
 import com.federico.moneytrack.domain.model.Transaction
 import com.federico.moneytrack.domain.repository.AccountRepository
 import com.federico.moneytrack.domain.repository.BitcoinRepository
+import com.federico.moneytrack.domain.repository.CategoryRepository
 import com.federico.moneytrack.domain.repository.TransactionRepository
 import javax.inject.Inject
 
 class AddBitcoinTransactionUseCase @Inject constructor(
     private val bitcoinRepository: BitcoinRepository,
     private val accountRepository: AccountRepository,
-    private val transactionRepository: TransactionRepository
+    private val transactionRepository: TransactionRepository,
+    private val categoryRepository: CategoryRepository
 ) {
     /**
      * @param satsAmount Cantidad de Satoshis (siempre positivo).
@@ -64,12 +66,13 @@ class AddBitcoinTransactionUseCase @Inject constructor(
         accountRepository.updateAccount(account.copy(currentBalance = newBalance))
 
         // 4. Registrar la transacción Fiat para historial
+        val btcCategory = categoryRepository.getCategoryByTransactionType("BITCOIN")
         val defaultNote = if (isBuy) "Compra Bitcoin ($satsAmount sats)" else "Venta Bitcoin ($satsAmount sats)"
         val finalNote = if (!note.isNullOrBlank()) "$defaultNote - $note" else defaultNote
 
         val transaction = Transaction(
             accountId = accountId,
-            categoryId = null,
+            categoryId = btcCategory?.id,
             amount = if (isBuy) -fiatAmount else fiatAmount,
             date = System.currentTimeMillis(),
             note = finalNote

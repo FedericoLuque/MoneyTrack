@@ -34,6 +34,10 @@ class CategoryRepositoryImpl @Inject constructor(
         dao.deleteCategory(category.toEntity())
     }
 
+    override suspend fun getCategoryByTransactionType(type: String): Category? {
+        return dao.getCategoryByTransactionType(type)?.toDomain()
+    }
+
     // Mappers
     private fun CategoryEntity.toDomain(): Category {
         return Category(

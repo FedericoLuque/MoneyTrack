@@ -2,8 +2,10 @@ package com.federico.moneytrack.domain.usecase.bitcoin
 
 import com.federico.moneytrack.domain.exception.InsufficientBalanceException
 import com.federico.moneytrack.domain.model.Account
+import com.federico.moneytrack.domain.model.Category
 import com.federico.moneytrack.domain.repository.AccountRepository
 import com.federico.moneytrack.domain.repository.BitcoinRepository
+import com.federico.moneytrack.domain.repository.CategoryRepository
 import com.federico.moneytrack.domain.repository.TransactionRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -19,14 +21,19 @@ class AddBitcoinTransactionUseCaseTest {
     private lateinit var bitcoinRepository: BitcoinRepository
     private lateinit var accountRepository: AccountRepository
     private lateinit var transactionRepository: TransactionRepository
+    private lateinit var categoryRepository: CategoryRepository
     private lateinit var useCase: AddBitcoinTransactionUseCase
+
+    private val btcCategory = Category(id = 99, name = "Bitcoin", iconName = "ic_bitcoin", colorHex = "#EF6C00", transactionType = "BITCOIN")
 
     @Before
     fun setUp() {
         bitcoinRepository = mockk(relaxed = true)
         accountRepository = mockk(relaxed = true)
         transactionRepository = mockk(relaxed = true)
-        useCase = AddBitcoinTransactionUseCase(bitcoinRepository, accountRepository, transactionRepository)
+        categoryRepository = mockk(relaxed = true)
+        coEvery { categoryRepository.getCategoryByTransactionType("BITCOIN") } returns btcCategory
+        useCase = AddBitcoinTransactionUseCase(bitcoinRepository, accountRepository, transactionRepository, categoryRepository)
     }
 
     @Test

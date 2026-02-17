@@ -39,6 +39,9 @@ interface TransactionDao {
     @Query("DELETE FROM transactions")
     suspend fun deleteAll()
 
+    @Query("UPDATE transactions SET category_id = :categoryId WHERE category_id IS NULL")
+    suspend fun updateNullCategoryTransactions(categoryId: Long)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(transactions: List<Transaction>)
 }

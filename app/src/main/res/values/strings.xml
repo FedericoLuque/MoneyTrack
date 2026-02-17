@@ -50,7 +50,7 @@
     <string name="theme_light">Claro</string>
     <string name="theme_dark">Oscuro</string>
     <string name="title_charts">Gráficos</string>
-    <string name="chart_weekly_cash_flow">Flujo de Caja Semanal</string>
+    <string name="chart_weekly_cash_flow">Flujo de Caja Mensual</string>
     <string name="chart_patrimony_composition">Composición de Patrimonio</string>
     <string name="legend_income">Ingresos</string>
     <string name="legend_expense">Gastos</string>
