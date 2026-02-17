@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.federico.moneytrack.domain.model.DailyCashFlow
 import com.federico.moneytrack.domain.repository.AccountRepository
 import com.federico.moneytrack.domain.usecase.GetBitcoinValueUseCase
-import com.federico.moneytrack.domain.usecase.GetWeeklyCashFlowUseCase
+import com.federico.moneytrack.domain.usecase.GetMonthlyCashFlowUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -15,19 +15,19 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ChartsViewModel @Inject constructor(
-    getWeeklyCashFlowUseCase: GetWeeklyCashFlowUseCase,
+    getMonthlyCashFlowUseCase: GetMonthlyCashFlowUseCase,
     accountRepository: AccountRepository,
     getBitcoinValueUseCase: GetBitcoinValueUseCase
 ) : ViewModel() {
 
     val uiState: StateFlow<ChartsUiState> = combine(
-        getWeeklyCashFlowUseCase(),
+        getMonthlyCashFlowUseCase(),
         accountRepository.getAllAccounts(),
         getBitcoinValueUseCase("eur")
-    ) { weeklyCashFlow, accounts, btcValue ->
+    ) { monthlyCashFlow, accounts, btcValue ->
         val fiatBalance = accounts.sumOf { it.currentBalance }
         ChartsUiState.Success(
-            weeklyCashFlow = weeklyCashFlow,
+            monthlyCashFlow = monthlyCashFlow,
             fiatBalance = fiatBalance,
             bitcoinValue = btcValue
         )
@@ -37,7 +37,7 @@ class ChartsViewModel @Inject constructor(
 sealed class ChartsUiState {
     object Loading : ChartsUiState()
     data class Success(
-        val weeklyCashFlow: List<DailyCashFlow>,
+        val monthlyCashFlow: List<DailyCashFlow>,
         val fiatBalance: Double,
         val bitcoinValue: Double
     ) : ChartsUiState()

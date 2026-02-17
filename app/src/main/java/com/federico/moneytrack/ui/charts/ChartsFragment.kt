@@ -34,6 +34,7 @@ class ChartsFragment : Fragment() {
 
     private val cashFlowProducer = CartesianChartModelProducer()
     private val patrimonyProducer = CartesianChartModelProducer()
+    private var cashFlowDayLabels: List<String> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,6 +47,7 @@ class ChartsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupCashFlowChart()
         binding.chartCashFlow.modelProducer = cashFlowProducer
         setupPatrimonyChart()
         binding.chartPatrimony.modelProducer = patrimonyProducer
@@ -65,11 +67,53 @@ class ChartsFragment : Fragment() {
         }
     }
 
-    private suspend fun updateCashFlowChart(state: ChartsUiState.Success) {
-        if (state.weeklyCashFlow.isEmpty()) return
+    private fun setupCashFlowChart() {
+        val incomeColor = Color.parseColor("#4CAF50")
+        val expenseColor = Color.parseColor("#F44336")
+        val axisColor = Color.GRAY
 
-        val incomes = state.weeklyCashFlow.map { it.incomeAmount }
-        val expenses = state.weeklyCashFlow.map { it.expenseAmount }
+        val columnLayer = ColumnCartesianLayer(
+            columnProvider = ColumnCartesianLayer.ColumnProvider.series(
+                LineComponent(Fill(incomeColor), thicknessDp = 8f),
+                LineComponent(Fill(expenseColor), thicknessDp = 8f)
+            ),
+            mergeMode = { ColumnCartesianLayer.MergeMode.Grouped() }
+        )
+
+        val axisLabel = TextComponent(textSizeSp = 10f)
+        val axisLine = LineComponent(Fill(axisColor), thicknessDp = 1f)
+        val axisTick = LineComponent(Fill(axisColor), thicknessDp = 1f)
+
+        val bottomAxis = HorizontalAxis.bottom(
+            label = axisLabel,
+            line = axisLine,
+            tick = axisTick,
+            tickLengthDp = 4f,
+            valueFormatter = CartesianValueFormatter { _, value, _ ->
+                cashFlowDayLabels.getOrElse(value.toInt()) { "" }
+            }
+        )
+
+        val startAxis = VerticalAxis.start(
+            label = axisLabel,
+            line = axisLine,
+            tick = axisTick,
+            tickLengthDp = 4f
+        )
+
+        binding.chartCashFlow.chart = CartesianChart(
+            columnLayer,
+            startAxis = startAxis,
+            bottomAxis = bottomAxis
+        )
+    }
+
+    private suspend fun updateCashFlowChart(state: ChartsUiState.Success) {
+        if (state.monthlyCashFlow.isEmpty()) return
+
+        cashFlowDayLabels = state.monthlyCashFlow.map { it.dayLabel }
+        val incomes = state.monthlyCashFlow.map { it.incomeAmount }
+        val expenses = state.monthlyCashFlow.map { it.expenseAmount }
 
         cashFlowProducer.runTransaction {
             columnSeries {
