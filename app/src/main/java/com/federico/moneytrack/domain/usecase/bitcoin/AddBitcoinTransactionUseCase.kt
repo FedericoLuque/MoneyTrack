@@ -1,5 +1,6 @@
 package com.federico.moneytrack.domain.usecase.bitcoin
 
+import com.federico.moneytrack.domain.exception.InsufficientBalanceException
 import com.federico.moneytrack.domain.model.BitcoinHolding
 import com.federico.moneytrack.domain.model.Transaction
 import com.federico.moneytrack.domain.repository.AccountRepository
@@ -27,12 +28,26 @@ class AddBitcoinTransactionUseCase @Inject constructor(
         price: Double,
         note: String?
     ) {
-        // 1. Registrar el movimiento de Bitcoin (Holding)
-        // Por simplicidad, añadimos un nuevo registro de holding cada vez.
-        // En un futuro, podríamos consolidar registros o usar UTXOs virtuales.
-        // Si es compra, sats positivos. Si es venta, sats negativos.
+        // 1. Obtener la cuenta fiat y validar saldo
+        val account = accountRepository.getAccountById(accountId)
+            ?: throw IllegalArgumentException("Account not found")
+
+        if (isBuy) {
+            // Compra BTC: verificar saldo fiat suficiente
+            if (account.currentBalance < fiatAmount) {
+                throw InsufficientBalanceException("Saldo insuficiente en la cuenta")
+            }
+        } else {
+            // Venta BTC: verificar saldo de sats suficiente
+            val totalSats = bitcoinRepository.getTotalSats()
+            if (totalSats < satsAmount) {
+                throw InsufficientBalanceException("Saldo insuficiente de Bitcoin")
+            }
+        }
+
+        // 2. Registrar el movimiento de Bitcoin (Holding)
         val finalSats = if (isBuy) satsAmount else -satsAmount
-        
+
         val holding = BitcoinHolding(
             satsAmount = finalSats,
             lastFiatPrice = price,
@@ -40,11 +55,7 @@ class AddBitcoinTransactionUseCase @Inject constructor(
         )
         bitcoinRepository.insertBitcoinHolding(holding)
 
-        // 2. Afectar la cuenta Fiat (Account)
-        val account = accountRepository.getAccountById(accountId)
-            ?: throw IllegalArgumentException("Account not found")
-
-        // Si compro BTC, gasto Fiat (resto). Si vendo BTC, recibo Fiat (sumo).
+        // 3. Afectar la cuenta Fiat (Account)
         val newBalance = if (isBuy) {
             account.currentBalance - fiatAmount
         } else {
@@ -52,9 +63,7 @@ class AddBitcoinTransactionUseCase @Inject constructor(
         }
         accountRepository.updateAccount(account.copy(currentBalance = newBalance))
 
-        // 3. Registrar la transacción Fiat para historial
-        // Usaremos categoryId nulo o una categoría especial "Inversión/Bitcoin" si existiera.
-        // Por ahora nulo.
+        // 4. Registrar la transacción Fiat para historial
         val defaultNote = if (isBuy) "Compra Bitcoin ($satsAmount sats)" else "Venta Bitcoin ($satsAmount sats)"
         val finalNote = if (!note.isNullOrBlank()) "$defaultNote - $note" else defaultNote
 
@@ -65,10 +74,6 @@ class AddBitcoinTransactionUseCase @Inject constructor(
             date = System.currentTimeMillis(),
             note = finalNote
         )
-        // Nota: El AddTransactionUseCase original ya actualiza saldo, pero aquí hemos actualizado
-        // manualmente la cuenta para tener control atómico.
-        // Así que insertamos la transacción directamente en el repositorio sin pasar por el UseCase
-        // para no duplicar el cambio de saldo.
         transactionRepository.insertTransaction(transaction)
     }
 }

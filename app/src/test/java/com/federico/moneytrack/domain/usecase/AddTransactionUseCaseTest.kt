@@ -1,5 +1,6 @@
 package com.federico.moneytrack.domain.usecase
 
+import com.federico.moneytrack.domain.exception.InsufficientBalanceException
 import com.federico.moneytrack.domain.model.Account
 import com.federico.moneytrack.domain.model.Transaction
 import com.federico.moneytrack.domain.repository.AccountRepository
@@ -9,6 +10,7 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Test
 
@@ -73,5 +75,49 @@ class AddTransactionUseCaseTest {
 
         coVerify(exactly = 1) { transactionRepository.insertTransaction(transaction) }
         coVerify(exactly = 1) { accountRepository.updateAccount(any()) }
+    }
+
+    @Test
+    fun `gasto con saldo insuficiente lanza InsufficientBalanceException`() = runTest {
+        val account = Account(id = 1, name = "Efectivo", currentBalance = 50.0, type = "cash")
+        coEvery { accountRepository.getAccountById(1) } returns account
+
+        val transaction = Transaction(accountId = 1, categoryId = null, amount = 100.0, date = 0L, note = null)
+
+        try {
+            useCase(transaction, isExpense = true)
+            fail("Debería lanzar InsufficientBalanceException")
+        } catch (e: InsufficientBalanceException) {
+            assertEquals("Saldo insuficiente en la cuenta", e.message)
+        }
+
+        coVerify(exactly = 0) { transactionRepository.insertTransaction(any()) }
+        coVerify(exactly = 0) { accountRepository.updateAccount(any()) }
+    }
+
+    @Test
+    fun `gasto exacto al saldo funciona correctamente`() = runTest {
+        val account = Account(id = 1, name = "Efectivo", currentBalance = 100.0, type = "cash")
+        coEvery { accountRepository.getAccountById(1) } returns account
+
+        val transaction = Transaction(accountId = 1, categoryId = null, amount = 100.0, date = 0L, note = null)
+
+        useCase(transaction, isExpense = true)
+
+        coVerify { transactionRepository.insertTransaction(transaction) }
+        coVerify { accountRepository.updateAccount(match { it.currentBalance == 0.0 }) }
+    }
+
+    @Test
+    fun `ingreso no valida saldo`() = runTest {
+        val account = Account(id = 1, name = "Efectivo", currentBalance = 0.0, type = "cash")
+        coEvery { accountRepository.getAccountById(1) } returns account
+
+        val transaction = Transaction(accountId = 1, categoryId = null, amount = 500.0, date = 0L, note = null)
+
+        useCase(transaction, isExpense = false)
+
+        coVerify { transactionRepository.insertTransaction(transaction) }
+        coVerify { accountRepository.updateAccount(match { it.currentBalance == 500.0 }) }
     }
 }

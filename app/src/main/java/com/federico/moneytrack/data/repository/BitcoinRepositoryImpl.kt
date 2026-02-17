@@ -27,6 +27,8 @@ class BitcoinRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getTotalSats(): Long = dao.getTotalSats()
+
     override suspend fun insertBitcoinHolding(holding: BitcoinHolding) {
         dao.insertBitcoinHolding(holding.toEntity())
     }
