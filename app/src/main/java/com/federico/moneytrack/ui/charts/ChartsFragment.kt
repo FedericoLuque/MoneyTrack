@@ -12,8 +12,16 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.federico.moneytrack.R
 import com.federico.moneytrack.databinding.FragmentChartsBinding
+import com.patrykandpatrick.vico.core.cartesian.CartesianChart
+import com.patrykandpatrick.vico.core.cartesian.axis.HorizontalAxis
+import com.patrykandpatrick.vico.core.cartesian.axis.VerticalAxis
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
+import com.patrykandpatrick.vico.core.cartesian.data.CartesianValueFormatter
 import com.patrykandpatrick.vico.core.cartesian.data.columnSeries
+import com.patrykandpatrick.vico.core.cartesian.layer.ColumnCartesianLayer
+import com.patrykandpatrick.vico.core.common.Fill
+import com.patrykandpatrick.vico.core.common.component.LineComponent
+import com.patrykandpatrick.vico.core.common.component.TextComponent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -39,6 +47,7 @@ class ChartsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.chartCashFlow.modelProducer = cashFlowProducer
+        setupPatrimonyChart()
         binding.chartPatrimony.modelProducer = patrimonyProducer
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -70,13 +79,56 @@ class ChartsFragment : Fragment() {
         }
     }
 
+    private fun setupPatrimonyChart() {
+        val fiatColor = Color.parseColor("#2196F3")
+        val btcColor = Color.parseColor("#F7931A")
+        val axisColor = Color.GRAY
+
+        val columnLayer = ColumnCartesianLayer(
+            columnProvider = ColumnCartesianLayer.ColumnProvider.series(
+                LineComponent(Fill(fiatColor), thicknessDp = 16f),
+                LineComponent(Fill(btcColor), thicknessDp = 16f)
+            ),
+            mergeMode = { ColumnCartesianLayer.MergeMode.Stacked }
+        )
+
+        val axisLabel = TextComponent(textSizeSp = 12f)
+        val axisLine = LineComponent(Fill(axisColor), thicknessDp = 1f)
+        val axisTick = LineComponent(Fill(axisColor), thicknessDp = 1f)
+
+        val labels = listOf("Fiat", "Bitcoin")
+        val bottomAxis = HorizontalAxis.bottom(
+            label = axisLabel,
+            line = axisLine,
+            tick = axisTick,
+            tickLengthDp = 4f,
+            valueFormatter = CartesianValueFormatter { _, value, _ ->
+                labels.getOrElse(value.toInt()) { "" }
+            }
+        )
+
+        val startAxis = VerticalAxis.start(
+            label = axisLabel,
+            line = axisLine,
+            tick = axisTick,
+            tickLengthDp = 4f
+        )
+
+        binding.chartPatrimony.chart = CartesianChart(
+            columnLayer,
+            startAxis = startAxis,
+            bottomAxis = bottomAxis
+        )
+    }
+
     private suspend fun updatePatrimonyChart(state: ChartsUiState.Success) {
         val fiat = state.fiatBalance.coerceAtLeast(0.0)
         val btc = state.bitcoinValue.coerceAtLeast(0.0)
 
         patrimonyProducer.runTransaction {
             columnSeries {
-                series(fiat, btc)
+                series(fiat, 0.0)
+                series(0.0, btc)
             }
         }
     }
