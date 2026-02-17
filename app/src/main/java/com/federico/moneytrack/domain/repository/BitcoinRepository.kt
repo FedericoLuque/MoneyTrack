@@ -9,4 +9,5 @@ interface BitcoinRepository {
     suspend fun deleteBitcoinHolding(holding: BitcoinHolding)
     suspend fun getTotalSats(): Long
     suspend fun getBitcoinPrice(currency: String): Double
+    suspend fun getHoldingByTransactionId(transactionId: Long): BitcoinHolding?
 }

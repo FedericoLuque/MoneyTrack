@@ -47,17 +47,7 @@ class AddBitcoinTransactionUseCase @Inject constructor(
             }
         }
 
-        // 2. Registrar el movimiento de Bitcoin (Holding)
-        val finalSats = if (isBuy) satsAmount else -satsAmount
-
-        val holding = BitcoinHolding(
-            satsAmount = finalSats,
-            lastFiatPrice = price,
-            lastUpdate = System.currentTimeMillis()
-        )
-        bitcoinRepository.insertBitcoinHolding(holding)
-
-        // 3. Afectar la cuenta Fiat (Account)
+        // 2. Afectar la cuenta Fiat (Account)
         val newBalance = if (isBuy) {
             account.currentBalance - fiatAmount
         } else {
@@ -65,7 +55,7 @@ class AddBitcoinTransactionUseCase @Inject constructor(
         }
         accountRepository.updateAccount(account.copy(currentBalance = newBalance))
 
-        // 4. Registrar la transacción Fiat para historial
+        // 3. Registrar la transacción Fiat para historial
         val btcCategory = categoryRepository.getCategoryByTransactionType("BITCOIN")
         val defaultNote = if (isBuy) "Compra Bitcoin ($satsAmount sats)" else "Venta Bitcoin ($satsAmount sats)"
         val finalNote = if (!note.isNullOrBlank()) "$defaultNote - $note" else defaultNote
@@ -77,6 +67,17 @@ class AddBitcoinTransactionUseCase @Inject constructor(
             date = System.currentTimeMillis(),
             note = finalNote
         )
-        transactionRepository.insertTransaction(transaction)
+        val transactionId = transactionRepository.insertTransaction(transaction)
+
+        // 4. Registrar el movimiento de Bitcoin (Holding) vinculado a la transacción
+        val finalSats = if (isBuy) satsAmount else -satsAmount
+
+        val holding = BitcoinHolding(
+            satsAmount = finalSats,
+            lastFiatPrice = price,
+            lastUpdate = System.currentTimeMillis(),
+            transactionId = transactionId
+        )
+        bitcoinRepository.insertBitcoinHolding(holding)
     }
 }

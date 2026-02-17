@@ -22,7 +22,7 @@ object AppModule {
             context,
             AppDatabase::class.java,
             "moneytrack_db"
-        ).build()
+        ).addMigrations(AppDatabase.MIGRATION_1_2).build()
     }
 
     @Provides

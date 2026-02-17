@@ -4,7 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.federico.moneytrack.domain.model.Transaction
 import com.federico.moneytrack.domain.model.TransactionWithCategory
+import com.federico.moneytrack.domain.repository.BitcoinRepository
 import com.federico.moneytrack.domain.repository.TransactionRepository
+import com.federico.moneytrack.domain.usecase.DeleteTransactionUseCase
+import com.federico.moneytrack.domain.usecase.bitcoin.DeleteBitcoinTransactionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -16,7 +19,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TransactionsViewModel @Inject constructor(
-    private val transactionRepository: TransactionRepository
+    private val transactionRepository: TransactionRepository,
+    private val deleteTransactionUseCase: DeleteTransactionUseCase,
+    private val deleteBitcoinTransactionUseCase: DeleteBitcoinTransactionUseCase,
+    private val bitcoinRepository: BitcoinRepository
 ) : ViewModel() {
 
     val transactions: StateFlow<List<TransactionWithCategory>> = transactionRepository.getAllTransactionsWithCategory()
@@ -25,14 +31,21 @@ class TransactionsViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow: SharedFlow<UiEvent> = _eventFlow
 
-    fun deleteTransaction(transaction: Transaction) {
+    fun deleteTransaction(transaction: Transaction, categoryType: String?) {
         viewModelScope.launch {
             try {
-                // TODO: Aquí deberíamos actualizar el saldo de la cuenta implicada (sumar lo gastado o restar lo ingresado).
-                // Por ahora solo borramos el registro para no complicar en exceso esta iteración.
-                // Idealmente usaríamos un DeleteTransactionUseCase que revierta el saldo.
-                
-                transactionRepository.deleteTransaction(transaction)
+                if (categoryType == "BITCOIN") {
+                    val holding = bitcoinRepository.getHoldingByTransactionId(transaction.id)
+                    if (holding != null) {
+                        deleteBitcoinTransactionUseCase(holding)
+                    } else {
+                        // Holding no encontrado, borrar solo la transacción revirtiendo saldo
+                        deleteTransactionUseCase(transaction, transaction.amount < 0)
+                    }
+                } else {
+                    val isExpense = categoryType == "EXPENSE" || transaction.amount < 0
+                    deleteTransactionUseCase(transaction, isExpense)
+                }
                 _eventFlow.emit(UiEvent.DeleteSuccess)
             } catch (e: Exception) {
                 _eventFlow.emit(UiEvent.Error(e.message ?: "Error al eliminar"))

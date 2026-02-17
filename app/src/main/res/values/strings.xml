@@ -74,4 +74,8 @@
     <string name="settings_delete_all_cancel">Cancelar</string>
     <string name="settings_delete_all_success">Todos los datos han sido borrados</string>
     <string name="settings_delete_all_error">Error al borrar datos: %s</string>
+    <string name="bitcoin_delete_dialog_title">Eliminar operación Bitcoin</string>
+    <string name="bitcoin_delete_dialog_message">¿Estás seguro de que deseas eliminar esta operación? Se revertirá el saldo fiat y se eliminará el registro de la transacción.</string>
+    <string name="bitcoin_delete_dialog_confirm">Eliminar</string>
+    <string name="bitcoin_delete_success">Operación Bitcoin eliminada</string>
 </resources>

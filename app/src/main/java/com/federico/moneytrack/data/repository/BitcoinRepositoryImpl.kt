@@ -63,13 +63,18 @@ class BitcoinRepositoryImpl @Inject constructor(
         dao.deleteBitcoinHolding(holding.toEntity())
     }
 
+    override suspend fun getHoldingByTransactionId(transactionId: Long): BitcoinHolding? {
+        return dao.getHoldingByTransactionId(transactionId)?.toDomain()
+    }
+
     // Mappers
     private fun BitcoinEntity.toDomain(): BitcoinHolding {
         return BitcoinHolding(
             id = id,
             satsAmount = satsAmount,
             lastFiatPrice = lastFiatPrice,
-            lastUpdate = lastUpdate
+            lastUpdate = lastUpdate,
+            transactionId = transactionId
         )
     }
 
@@ -78,7 +83,8 @@ class BitcoinRepositoryImpl @Inject constructor(
             id = id,
             satsAmount = satsAmount,
             lastFiatPrice = lastFiatPrice,
-            lastUpdate = lastUpdate
+            lastUpdate = lastUpdate,
+            transactionId = transactionId
         )
     }
 }

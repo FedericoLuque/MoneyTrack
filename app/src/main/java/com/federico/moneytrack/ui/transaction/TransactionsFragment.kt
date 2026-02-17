@@ -63,7 +63,7 @@ class TransactionsFragment : Fragment() {
 
     private fun setupRecyclerView() {
         transactionAdapter = TransactionAdapter { item ->
-            showDeleteDialog(item.transaction)
+            showDeleteDialog(item)
         }
         binding.rvTransactions.apply {
             adapter = transactionAdapter
@@ -71,12 +71,12 @@ class TransactionsFragment : Fragment() {
         }
     }
 
-    private fun showDeleteDialog(transaction: com.federico.moneytrack.domain.model.Transaction) {
+    private fun showDeleteDialog(item: com.federico.moneytrack.domain.model.TransactionWithCategory) {
         AlertDialog.Builder(requireContext())
             .setTitle("Eliminar transacción")
-            .setMessage("¿Estás seguro de que deseas eliminar este movimiento? (Nota: El saldo no se revertirá automáticamente en esta versión)")
+            .setMessage("¿Estás seguro de que deseas eliminar este movimiento? El saldo se revertirá automáticamente.")
             .setPositiveButton("Eliminar") { _, _ ->
-                viewModel.deleteTransaction(transaction)
+                viewModel.deleteTransaction(item.transaction, item.category?.transactionType)
             }
             .setNegativeButton("Cancelar", null)
             .show()

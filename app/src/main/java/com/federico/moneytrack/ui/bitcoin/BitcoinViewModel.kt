@@ -7,6 +7,7 @@ import com.federico.moneytrack.domain.repository.AccountRepository
 import com.federico.moneytrack.domain.repository.BitcoinRepository
 import com.federico.moneytrack.domain.usecase.GetBitcoinValueUseCase
 import com.federico.moneytrack.domain.usecase.bitcoin.AddBitcoinTransactionUseCase
+import com.federico.moneytrack.domain.usecase.bitcoin.DeleteBitcoinTransactionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -20,6 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class BitcoinViewModel @Inject constructor(
     private val addBitcoinTransactionUseCase: AddBitcoinTransactionUseCase,
+    private val deleteBitcoinTransactionUseCase: DeleteBitcoinTransactionUseCase,
     private val getBitcoinValueUseCase: GetBitcoinValueUseCase,
     accountRepository: AccountRepository,
     bitcoinRepository: BitcoinRepository
@@ -76,8 +78,20 @@ class BitcoinViewModel @Inject constructor(
         val holdings: List<com.federico.moneytrack.domain.model.BitcoinHolding> = emptyList()
     )
 
+    fun deleteBitcoinHolding(holding: com.federico.moneytrack.domain.model.BitcoinHolding) {
+        viewModelScope.launch {
+            try {
+                deleteBitcoinTransactionUseCase(holding)
+                _eventFlow.emit(UiEvent.DeleteSuccess)
+            } catch (e: Exception) {
+                _eventFlow.emit(UiEvent.Error(e.message ?: "Error al eliminar"))
+            }
+        }
+    }
+
     sealed class UiEvent {
         object TransactionSuccess : UiEvent()
+        object DeleteSuccess : UiEvent()
         data class Error(val message: String) : UiEvent()
     }
 }

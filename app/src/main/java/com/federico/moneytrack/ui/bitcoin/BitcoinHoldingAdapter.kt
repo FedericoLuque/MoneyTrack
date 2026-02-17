@@ -13,7 +13,9 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class BitcoinHoldingAdapter : ListAdapter<BitcoinHolding, BitcoinHoldingAdapter.HoldingViewHolder>(DiffCallback) {
+class BitcoinHoldingAdapter(
+    private val onItemClick: ((BitcoinHolding) -> Unit)? = null
+) : ListAdapter<BitcoinHolding, BitcoinHoldingAdapter.HoldingViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HoldingViewHolder {
         val binding = ItemBitcoinHoldingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -21,7 +23,9 @@ class BitcoinHoldingAdapter : ListAdapter<BitcoinHolding, BitcoinHoldingAdapter.
     }
 
     override fun onBindViewHolder(holder: HoldingViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val item = getItem(position)
+        holder.bind(item)
+        holder.itemView.setOnClickListener { onItemClick?.invoke(item) }
     }
 
     class HoldingViewHolder(
