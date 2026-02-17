@@ -12,6 +12,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.federico.moneytrack.R
 import com.federico.moneytrack.databinding.FragmentBitcoinBinding
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
@@ -23,6 +24,7 @@ class BitcoinFragment : Fragment() {
     private var _binding: FragmentBitcoinBinding? = null
     private val binding get() = _binding!!
     private val viewModel: BitcoinViewModel by viewModels()
+    private val holdingAdapter = BitcoinHoldingAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,18 +37,27 @@ class BitcoinFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.rvHoldings.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = holdingAdapter
+        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { state ->
                     val currencyFormat = NumberFormat.getCurrencyInstance(Locale("es", "ES"))
                     val satsFormat = NumberFormat.getIntegerInstance(Locale.getDefault())
-                    
+
                     binding.tvBtcBalance.text = "${satsFormat.format(state.totalSats)} Sats"
                     binding.tvFiatValue.text = "≈ ${currencyFormat.format(state.fiatValue)}"
+
+                    holdingAdapter.submitList(state.holdings)
+                    binding.tvEmptyState.visibility = if (state.holdings.isEmpty()) View.VISIBLE else View.GONE
+                    binding.rvHoldings.visibility = if (state.holdings.isEmpty()) View.GONE else View.VISIBLE
                 }
             }
         }
-        
+
         binding.btnBuy.setOnClickListener {
             val bundle = Bundle().apply { putBoolean("isBuy", true) }
             findNavController().navigate(R.id.action_bitcoinFragment_to_addBitcoinTransactionFragment, bundle)

@@ -34,6 +34,8 @@
     <string name="label_sats_amount">Cantidad (Sats)</string>
     <string name="label_fiat_amount">Cantidad (Fiat)</string>
     <string name="msg_btc_transaction_saved">Operación registrada</string>
+    <string name="bitcoin_operations_title">Operaciones</string>
+    <string name="bitcoin_no_operations">No hay operaciones registradas</string>
     <string name="title_categories">Categorías</string>
     <string name="action_add_category">Nueva Categoría</string>
     <string name="label_category_name">Nombre de la categoría</string>

@@ -54,7 +54,7 @@ class TransactionAdapter(
             // Asumimos que category.transactionType nos da la pista, o si category es null (ej Bitcoin), miramos el contexto.
             // Por simplicidad, si la categoría es INCOME -> Verde. Si es EXPENSE -> Rojo.
             
-            val isIncome = category?.transactionType == "INCOME"
+            val isIncome = if (category != null) category.transactionType == "INCOME" else transaction.amount >= 0
             val color = if (isIncome) Color.parseColor("#4CAF50") else Color.parseColor("#F44336")
             
             binding.tvAmount.setTextColor(color)
