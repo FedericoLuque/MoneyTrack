@@ -20,11 +20,11 @@ class BitcoinPriceAlertChecker @Inject constructor(
 
         if (currentPrice <= 0.0) return
 
-        val baselinePrice = prefs.getFloat(KEY_BASELINE_PRICE, 0f).toDouble()
+        val baselinePrice = Double.fromBits(prefs.getLong(KEY_BASELINE_PRICE, 0L))
         val threshold = prefs.getFloat(KEY_ALERT_THRESHOLD, 5f).toDouble()
 
         if (baselinePrice <= 0.0) {
-            prefs.edit().putFloat(KEY_BASELINE_PRICE, currentPrice.toFloat()).apply()
+            prefs.edit().putLong(KEY_BASELINE_PRICE, currentPrice.toBits()).apply()
             return
         }
 
@@ -32,7 +32,7 @@ class BitcoinPriceAlertChecker @Inject constructor(
 
         if (abs(changePercent) >= threshold) {
             notificationHelper.showBitcoinAlertNotification(currentPrice, changePercent)
-            prefs.edit().putFloat(KEY_BASELINE_PRICE, currentPrice.toFloat()).apply()
+            prefs.edit().putLong(KEY_BASELINE_PRICE, currentPrice.toBits()).apply()
         }
     }
 
