@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.federico.moneytrack.data.local.CsvBackupManager
+import com.federico.moneytrack.worker.BitcoinPriceAlertChecker
 import com.federico.moneytrack.worker.ReminderScheduler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -57,6 +58,15 @@ class SettingsViewModel @Inject constructor(
             .putInt(KEY_REMINDER_MINUTE, minute)
             .apply()
         reminderScheduler.schedule(hour, minute)
+    }
+
+    fun getBitcoinAlertThreshold(): Int =
+        prefs.getFloat(BitcoinPriceAlertChecker.KEY_ALERT_THRESHOLD, 5f).toInt()
+
+    fun saveBitcoinAlertThreshold(percent: Int) {
+        prefs.edit()
+            .putFloat(BitcoinPriceAlertChecker.KEY_ALERT_THRESHOLD, percent.toFloat())
+            .apply()
     }
 
     companion object {
