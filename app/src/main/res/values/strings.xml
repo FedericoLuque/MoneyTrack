@@ -70,11 +70,11 @@
     <string name="onboarding_next">Siguiente</string>
     <string name="onboarding_start">Empezar</string>
     <string name="onboarding_title_1">Bienvenido a MoneyTrack</string>
-    <string name="onboarding_desc_1">Tu gestor de finanzas personales. Registrá ingresos, gastos y llevá el control de tus cuentas en un solo lugar.</string>
+    <string name="onboarding_desc_1">Tu gestor de finanzas personales. Registra ingresos, gastos y lleva el control de tus cuentas en un solo lugar.</string>
     <string name="onboarding_title_2">Cuentas y transacciones</string>
-    <string name="onboarding_desc_2">Creá múltiples cuentas (efectivo, banco, ahorro) y registrá cada movimiento con categorías personalizadas.</string>
+    <string name="onboarding_desc_2">Crea múltiples cuentas (efectivo, banco, ahorro) y registra cada movimiento con categorías personalizadas.</string>
     <string name="onboarding_title_3">Bitcoin y gráficos</string>
-    <string name="onboarding_desc_3">Seguí tus tenencias en Bitcoin con precio en tiempo real y visualizá tu patrimonio con gráficos claros.</string>
+    <string name="onboarding_desc_3">Sigue tus tenencias en Bitcoin con precio en tiempo real y visualiza tu patrimonio con gráficos claros.</string>
 
     <!-- Recordatorio diario -->
     <string name="settings_reminder_title">Recordatorio diario</string>
