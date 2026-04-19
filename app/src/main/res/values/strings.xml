@@ -75,4 +75,9 @@
     <string name="onboarding_desc_2">Creá múltiples cuentas (efectivo, banco, ahorro) y registrá cada movimiento con categorías personalizadas.</string>
     <string name="onboarding_title_3">Bitcoin y gráficos</string>
     <string name="onboarding_desc_3">Seguí tus tenencias en Bitcoin con precio en tiempo real y visualizá tu patrimonio con gráficos claros.</string>
+
+    <!-- Recordatorio diario -->
+    <string name="settings_reminder_title">Recordatorio diario</string>
+    <string name="settings_reminder_description">Hora del recordatorio para registrar gastos</string>
+    <string name="settings_reminder_time_format">%1$02d:%2$02d</string>
 </resources>

@@ -85,6 +85,24 @@ class SettingsFragment : Fragment() {
             importLauncher.launch(arrayOf("text/*"))
         }
 
+        // Reminder time picker
+        val (initHour, initMinute) = viewModel.getReminderTime()
+        binding.btnReminderTime.text = getString(R.string.settings_reminder_time_format, initHour, initMinute)
+
+        binding.btnReminderTime.setOnClickListener {
+            val (currentHour, currentMinute) = viewModel.getReminderTime()
+            android.app.TimePickerDialog(
+                requireContext(),
+                { _, selectedHour, selectedMinute ->
+                    viewModel.saveReminderTime(selectedHour, selectedMinute)
+                    binding.btnReminderTime.text = getString(R.string.settings_reminder_time_format, selectedHour, selectedMinute)
+                },
+                currentHour,
+                currentMinute,
+                true
+            ).show()
+        }
+
         // Observar estado
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
