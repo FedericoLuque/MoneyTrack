@@ -12,11 +12,16 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.federico.moneytrack.R
 import com.federico.moneytrack.data.local.DataSeeder
 import com.federico.moneytrack.databinding.ActivityMainBinding
+import com.federico.moneytrack.worker.BudgetAlertWorker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -69,5 +74,11 @@ class MainActivity : AppCompatActivity() {
                 requestNotificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            "budget_alert",
+            ExistingPeriodicWorkPolicy.KEEP,
+            PeriodicWorkRequestBuilder<BudgetAlertWorker>(24, TimeUnit.HOURS).build()
+        )
     }
 }
