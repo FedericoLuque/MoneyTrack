@@ -18,6 +18,7 @@ import androidx.work.WorkManager
 import com.federico.moneytrack.R
 import com.federico.moneytrack.data.local.DataSeeder
 import com.federico.moneytrack.databinding.ActivityMainBinding
+import com.federico.moneytrack.worker.BitcoinPriceAlertWorker
 import com.federico.moneytrack.worker.BudgetAlertWorker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -79,6 +80,12 @@ class MainActivity : AppCompatActivity() {
             "budget_alert",
             ExistingPeriodicWorkPolicy.KEEP,
             PeriodicWorkRequestBuilder<BudgetAlertWorker>(24, TimeUnit.HOURS).build()
+        )
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            "bitcoin_price_alert",
+            ExistingPeriodicWorkPolicy.KEEP,
+            PeriodicWorkRequestBuilder<BitcoinPriceAlertWorker>(1, TimeUnit.HOURS).build()
         )
     }
 }
