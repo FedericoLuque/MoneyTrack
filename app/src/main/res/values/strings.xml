@@ -69,4 +69,5 @@
     <!-- Recordatorio diario -->
     <string name="settings_reminder_title">Recordatorio diario</string>
     <string name="settings_reminder_description">Hora del recordatorio para registrar gastos</string>
+    <string name="settings_reminder_time_format">%1$02d:%2$02d</string>
 </resources>
