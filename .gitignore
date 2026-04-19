@@ -57,3 +57,6 @@ build/
 
 # Kotlin
 *.kotlin_module
+
+# Git worktrees
+.worktrees/
