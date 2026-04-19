@@ -1,8 +1,10 @@
 package com.federico.moneytrack.ui.settings
 
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.federico.moneytrack.data.local.CsvBackupManager
+import com.federico.moneytrack.worker.ReminderScheduler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +15,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val csvBackupManager: CsvBackupManager
+    private val csvBackupManager: CsvBackupManager,
+    private val prefs: SharedPreferences,
+    private val reminderScheduler: ReminderScheduler
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<SettingsUiState>(SettingsUiState.Idle)
@@ -39,6 +43,25 @@ class SettingsViewModel @Inject constructor(
 
     fun clearState() {
         _uiState.value = SettingsUiState.Idle
+    }
+
+    fun getReminderTime(): Pair<Int, Int> {
+        val hour = prefs.getInt(KEY_REMINDER_HOUR, 21)
+        val minute = prefs.getInt(KEY_REMINDER_MINUTE, 0)
+        return Pair(hour, minute)
+    }
+
+    fun saveReminderTime(hour: Int, minute: Int) {
+        prefs.edit()
+            .putInt(KEY_REMINDER_HOUR, hour)
+            .putInt(KEY_REMINDER_MINUTE, minute)
+            .apply()
+        reminderScheduler.schedule(hour, minute)
+    }
+
+    companion object {
+        private const val KEY_REMINDER_HOUR = "reminder_hour"
+        private const val KEY_REMINDER_MINUTE = "reminder_minute"
     }
 }
 
