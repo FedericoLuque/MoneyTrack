@@ -77,6 +77,9 @@ dependencies {
     // Vico Charts
     implementation(libs.vico.views)
 
+    // ViewPager2
+    implementation(libs.androidx.viewpager2)
+
     // Test
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
