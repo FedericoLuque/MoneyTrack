@@ -1,8 +1,10 @@
 package com.federico.moneytrack.ui.settings
 
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.federico.moneytrack.data.local.CsvBackupManager
+import com.federico.moneytrack.worker.BitcoinPriceAlertChecker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val csvBackupManager: CsvBackupManager
+    private val csvBackupManager: CsvBackupManager,
+    private val prefs: SharedPreferences
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<SettingsUiState>(SettingsUiState.Idle)
@@ -39,6 +42,15 @@ class SettingsViewModel @Inject constructor(
 
     fun clearState() {
         _uiState.value = SettingsUiState.Idle
+    }
+
+    fun getBitcoinAlertThreshold(): Int =
+        prefs.getFloat(BitcoinPriceAlertChecker.KEY_ALERT_THRESHOLD, 5f).toInt()
+
+    fun saveBitcoinAlertThreshold(percent: Int) {
+        prefs.edit()
+            .putFloat(BitcoinPriceAlertChecker.KEY_ALERT_THRESHOLD, percent.toFloat())
+            .apply()
     }
 }
 

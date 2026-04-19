@@ -76,6 +76,19 @@ class SettingsFragment : Fragment() {
             ThemeManager.saveThemePreference(requireContext(), theme)
         }
 
+        // Bitcoin alert threshold
+        val currentThreshold = viewModel.getBitcoinAlertThreshold()
+        binding.sliderBitcoinThreshold.value = currentThreshold.toFloat()
+        binding.tvBitcoinThresholdValue.text = "$currentThreshold%"
+
+        binding.sliderBitcoinThreshold.addOnChangeListener { _, value, fromUser ->
+            if (fromUser) {
+                val threshold = value.toInt()
+                binding.tvBitcoinThresholdValue.text = "$threshold%"
+                viewModel.saveBitcoinAlertThreshold(threshold)
+            }
+        }
+
         // Exportar / Importar
         binding.btnExport.setOnClickListener {
             exportLauncher.launch("moneytrack_backup.csv")
