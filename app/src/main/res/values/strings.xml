@@ -65,6 +65,11 @@
     <string name="settings_import_success">Datos importados correctamente: %d registros</string>
     <string name="settings_export_error">Error al exportar: %s</string>
     <string name="settings_import_error">Error al importar: %s</string>
+    <!-- Recordatorio diario -->
+    <string name="settings_reminder_title">Recordatorio diario</string>
+    <string name="settings_reminder_description">Hora del recordatorio para registrar gastos</string>
+    <string name="settings_reminder_time_format">%1$02d:%2$02d</string>
+
     <!-- Alerta Bitcoin -->
     <string name="settings_bitcoin_alert_title">Alerta de precio Bitcoin</string>
     <string name="settings_bitcoin_alert_description">Notificar cuando el precio varíe más de:</string>
