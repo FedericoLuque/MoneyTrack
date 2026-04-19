@@ -2,10 +2,12 @@ package com.federico.moneytrack.di
 
 import com.federico.moneytrack.data.repository.AccountRepositoryImpl
 import com.federico.moneytrack.data.repository.BitcoinRepositoryImpl
+import com.federico.moneytrack.data.repository.BudgetRepositoryImpl
 import com.federico.moneytrack.data.repository.CategoryRepositoryImpl
 import com.federico.moneytrack.data.repository.TransactionRepositoryImpl
 import com.federico.moneytrack.domain.repository.AccountRepository
 import com.federico.moneytrack.domain.repository.BitcoinRepository
+import com.federico.moneytrack.domain.repository.BudgetRepository
 import com.federico.moneytrack.domain.repository.CategoryRepository
 import com.federico.moneytrack.domain.repository.TransactionRepository
 import dagger.Binds
@@ -41,4 +43,10 @@ abstract class RepositoryModule {
     abstract fun bindBitcoinRepository(
         bitcoinRepositoryImpl: BitcoinRepositoryImpl
     ): BitcoinRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindBudgetRepository(
+        budgetRepositoryImpl: BudgetRepositoryImpl
+    ): BudgetRepository
 }
