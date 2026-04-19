@@ -83,6 +83,9 @@ dependencies {
     ksp(libs.androidx.hilt.work.compiler)
     testImplementation(libs.work.testing)
 
+    // ViewPager2
+    implementation(libs.androidx.viewpager2)
+
     // Test
     testImplementation(libs.junit)
     testImplementation(libs.mockk)

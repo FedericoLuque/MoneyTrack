@@ -1,6 +1,7 @@
 package com.federico.moneytrack.ui
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -18,6 +19,8 @@ import androidx.work.WorkManager
 import com.federico.moneytrack.R
 import com.federico.moneytrack.data.local.DataSeeder
 import com.federico.moneytrack.databinding.ActivityMainBinding
+import com.federico.moneytrack.ui.onboarding.OnboardingActivity
+import com.federico.moneytrack.ui.onboarding.OnboardingViewModel
 import com.federico.moneytrack.worker.BudgetAlertWorker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -39,6 +42,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val prefs = getSharedPreferences("moneytrack_prefs", MODE_PRIVATE)
+        if (!prefs.getBoolean(OnboardingViewModel.KEY_ONBOARDING_COMPLETED, false)) {
+            startActivity(Intent(this, OnboardingActivity::class.java))
+            finish()
+            return
+        }
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
