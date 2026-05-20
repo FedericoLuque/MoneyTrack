@@ -1,11 +1,12 @@
 package com.federico.moneytrack.ui.bitcoin
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.federico.moneytrack.R
 import com.federico.moneytrack.databinding.ItemBitcoinHoldingBinding
 import com.federico.moneytrack.domain.model.BitcoinHolding
 import java.text.NumberFormat
@@ -38,7 +39,9 @@ class BitcoinHoldingAdapter : ListAdapter<BitcoinHolding, BitcoinHoldingAdapter.
 
             val satsText = if (isBuy) "+${satsFormat.format(item.satsAmount)} sats" else "${satsFormat.format(item.satsAmount)} sats"
             binding.tvSats.text = satsText
-            binding.tvSats.setTextColor(if (isBuy) Color.parseColor("#4CAF50") else Color.parseColor("#F44336"))
+
+            val colorRes = if (isBuy) R.color.color_income else R.color.color_expense
+            binding.tvSats.setTextColor(ContextCompat.getColor(binding.root.context, colorRes))
         }
     }
 
