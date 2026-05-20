@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/windowBackground"
+    android:background="?android:attr/colorBackground"
     tools:context=".ui.dashboard.DashboardFragment">
 
     <ImageButton
@@ -33,15 +33,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Tarjeta de Saldo Total -->
+    <!-- Tarjeta de Saldo Total con gradiente azul-violeta -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardBalance"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="4dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnCategories">
@@ -49,6 +49,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/bg_balance_card"
             android:orientation="vertical"
             android:padding="24dp">
 
@@ -56,32 +57,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/dashboard_total_balance"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textSize="14sp" />
+                android:textColor="#B3FFFFFF"
+                android:textSize="13sp"
+                android:letterSpacing="0.05" />
 
             <TextView
                 android:id="@+id/tvTotalBalance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
                 android:text="€0,00"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="32sp"
+                android:textColor="@color/white"
+                android:textSize="34sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Tarjeta de Bitcoin -->
+    <!-- Tarjeta de Bitcoin — superficie limpia con ícono naranja -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardBitcoin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         app:cardCornerRadius="16dp"
-        app:cardElevation="4dp"
-        app:cardBackgroundColor="#F7931A"
+        app:cardElevation="0dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="?attr/colorSurfaceVariant"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cardBalance">
@@ -93,20 +96,25 @@
             android:padding="16dp"
             android:gravity="center_vertical">
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_launcher_foreground"
-                app:tint="@android:color/white" />
+            <TextView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@drawable/circle_background"
+                android:backgroundTint="@color/color_bitcoin"
+                android:gravity="center"
+                android:text="₿"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="14sp" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="12dp"
                 android:text="Bitcoin Holdings"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -114,8 +122,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="€0,00"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
+                android:textColor="@color/color_bitcoin"
+                android:textSize="17sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -139,7 +147,7 @@
             android:layout_weight="1"
             android:text="@string/dashboard_recent_transactions"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="18sp"
+            android:textSize="17sp"
             android:textStyle="bold" />
 
         <TextView
@@ -150,6 +158,7 @@
             android:text="Ver Todo"
             android:textColor="?attr/colorPrimary"
             android:textStyle="bold"
+            android:textSize="13sp"
             android:background="?attr/selectableItemBackground" />
     </LinearLayout>
 
@@ -158,6 +167,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
+        android:paddingBottom="8dp"
+        android:clipToPadding="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

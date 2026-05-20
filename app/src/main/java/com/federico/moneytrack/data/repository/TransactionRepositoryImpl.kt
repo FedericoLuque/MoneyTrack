@@ -41,11 +41,11 @@ class TransactionRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getTransactionById(id: Long): Transaction? {
-        return null // Not implemented in DAO yet
+        return dao.getTransactionById(id)?.toDomain()
     }
 
-    override suspend fun insertTransaction(transaction: Transaction) {
-        dao.insertTransaction(transaction.toEntity())
+    override suspend fun insertTransaction(transaction: Transaction): Long {
+        return dao.insertTransaction(transaction.toEntity())
     }
 
     override suspend fun deleteTransaction(transaction: Transaction) {

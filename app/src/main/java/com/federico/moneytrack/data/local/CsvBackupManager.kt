@@ -171,6 +171,16 @@ class CsvBackupManager @Inject constructor(
         totalRecords
     }
 
+    suspend fun deleteAllData(): Result<Unit> = runCatching {
+        db.withTransaction {
+            transactionDao.deleteAll()
+            budgetDao.deleteAll()
+            bitcoinHoldingDao.deleteAll()
+            categoryDao.deleteAll()
+            accountDao.deleteAll()
+        }
+    }
+
     private fun escapeCsv(value: String): String {
         return if (value.contains(",") || value.contains("\"") || value.contains("\n")) {
             "\"${value.replace("\"", "\"\"")}\""

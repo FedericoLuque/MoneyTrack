@@ -1,17 +1,18 @@
 package com.federico.moneytrack.ui.transaction
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.federico.moneytrack.R
 import com.federico.moneytrack.databinding.FragmentTransactionsBinding
 import com.federico.moneytrack.ui.dashboard.TransactionAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,11 +49,17 @@ class TransactionsFragment : Fragment() {
                 launch {
                     viewModel.eventFlow.collect { event ->
                         when (event) {
-                            is TransactionsViewModel.UiEvent.DeleteSuccess -> {
-                                Toast.makeText(requireContext(), "Transacción eliminada", Toast.LENGTH_SHORT).show()
+                            is TransactionsViewModel.UiEvent.NavigateToTransactionDetail -> {
+                                findNavController().navigate(
+                                    R.id.action_global_transactionDetailFragment,
+                                    bundleOf("transactionId" to event.transactionId)
+                                )
                             }
-                            is TransactionsViewModel.UiEvent.Error -> {
-                                Toast.makeText(requireContext(), event.message, Toast.LENGTH_SHORT).show()
+                            is TransactionsViewModel.UiEvent.NavigateToBitcoinDetail -> {
+                                findNavController().navigate(
+                                    R.id.action_global_bitcoinHoldingDetailFragment,
+                                    bundleOf("holdingId" to event.holdingId)
+                                )
                             }
                         }
                     }
@@ -63,23 +70,12 @@ class TransactionsFragment : Fragment() {
 
     private fun setupRecyclerView() {
         transactionAdapter = TransactionAdapter { item ->
-            showDeleteDialog(item.transaction)
+            viewModel.onTransactionClicked(item)
         }
         binding.rvTransactions.apply {
             adapter = transactionAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
-    }
-
-    private fun showDeleteDialog(transaction: com.federico.moneytrack.domain.model.Transaction) {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Eliminar transacción")
-            .setMessage("¿Estás seguro de que deseas eliminar este movimiento? (Nota: El saldo no se revertirá automáticamente en esta versión)")
-            .setPositiveButton("Eliminar") { _, _ ->
-                viewModel.deleteTransaction(transaction)
-            }
-            .setNegativeButton("Cancelar", null)
-            .show()
     }
 
     override fun onDestroyView() {

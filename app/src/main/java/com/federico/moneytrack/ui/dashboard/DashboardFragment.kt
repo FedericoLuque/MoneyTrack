@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.federico.moneytrack.R
 import com.federico.moneytrack.databinding.FragmentDashboardBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -39,33 +40,53 @@ class DashboardFragment : Fragment() {
         setupRecyclerView()
 
         binding.fabAdd.setOnClickListener {
-            findNavController().navigate(com.federico.moneytrack.R.id.action_dashboardFragment_to_addTransactionFragment)
+            findNavController().navigate(R.id.action_dashboardFragment_to_addTransactionFragment)
         }
 
         binding.btnCategories.setOnClickListener {
-            findNavController().navigate(com.federico.moneytrack.R.id.action_dashboardFragment_to_categoriesFragment)
+            findNavController().navigate(R.id.action_dashboardFragment_to_categoriesFragment)
         }
 
         binding.btnConfiguracion.setOnClickListener {
-            findNavController().navigate(com.federico.moneytrack.R.id.action_dashboardFragment_to_settingsFragment)
+            findNavController().navigate(R.id.action_dashboardFragment_to_settingsFragment)
         }
 
         binding.btnViewAllTransactions.setOnClickListener {
-            findNavController().navigate(com.federico.moneytrack.R.id.action_dashboardFragment_to_transactionsFragment)
+            findNavController().navigate(R.id.action_dashboardFragment_to_transactionsFragment)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect { state ->
-                    when (state) {
-                        is DashboardUiState.Loading -> {
-                            binding.tvTotalBalance.text = getString(com.federico.moneytrack.R.string.dashboard_loading)
+                launch {
+                    viewModel.uiState.collect { state ->
+                        when (state) {
+                            is DashboardUiState.Loading -> {
+                                binding.tvTotalBalance.text = getString(R.string.dashboard_loading)
+                            }
+                            is DashboardUiState.Success -> {
+                                val format = NumberFormat.getCurrencyInstance(Locale("es", "ES"))
+                                binding.tvTotalBalance.text = format.format(state.fiatBalance)
+                                binding.tvBitcoinValue.text = format.format(state.bitcoinValue)
+                                transactionAdapter.submitList(state.recentTransactions)
+                            }
                         }
-                        is DashboardUiState.Success -> {
-                            val format = NumberFormat.getCurrencyInstance(Locale("es", "ES"))
-                            binding.tvTotalBalance.text = format.format(state.fiatBalance)
-                            binding.tvBitcoinValue.text = format.format(state.bitcoinValue)
-                            transactionAdapter.submitList(state.recentTransactions)
+                    }
+                }
+                launch {
+                    viewModel.eventFlow.collect { event ->
+                        when (event) {
+                            is DashboardViewModel.UiEvent.NavigateToTransactionDetail -> {
+                                findNavController().navigate(
+                                    R.id.action_global_transactionDetailFragment,
+                                    bundleOf("transactionId" to event.transactionId)
+                                )
+                            }
+                            is DashboardViewModel.UiEvent.NavigateToBitcoinDetail -> {
+                                findNavController().navigate(
+                                    R.id.action_global_bitcoinHoldingDetailFragment,
+                                    bundleOf("holdingId" to event.holdingId)
+                                )
+                            }
                         }
                     }
                 }
@@ -74,7 +95,9 @@ class DashboardFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        transactionAdapter = TransactionAdapter()
+        transactionAdapter = TransactionAdapter { item ->
+            viewModel.onTransactionClicked(item)
+        }
         binding.rvTransactions.apply {
             adapter = transactionAdapter
             layoutManager = androidx.recyclerview.widget.LinearLayoutManager(requireContext())

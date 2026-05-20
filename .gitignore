@@ -58,5 +58,8 @@ build/
 # Kotlin
 *.kotlin_module
 
+# Claude Code local files
+.claude/
+
 # Git worktrees
 .worktrees/
