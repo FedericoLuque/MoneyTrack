@@ -114,6 +114,84 @@
                 android:textColor="?android:attr/textColorSecondary"
                 android:textSize="12sp" />
 
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_reminder_title"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textColor="?attr/colorOnSurface"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_reminder_description"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="?attr/colorOnSurfaceVariant"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnReminderTime"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text=""/>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_bitcoin_alert_title"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textColor="?attr/colorOnSurface"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_bitcoin_alert_description"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="?attr/colorOnSurfaceVariant"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="8dp">
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/sliderBitcoinThreshold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:valueFrom="1"
+                    android:valueTo="20"
+                    android:stepSize="1"
+                    android:value="5"/>
+
+                <TextView
+                    android:id="@+id/tvBitcoinThresholdValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:minWidth="48dp"
+                    android:text="5%"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"/>
+
+            </LinearLayout>
+
             <!-- Separador -->
             <View
                 android:layout_width="match_parent"
@@ -127,7 +205,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/settings_section_danger"
-                android:textColor="#D32F2F"
+                android:textColor="@color/color_expense"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -138,18 +216,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/settings_delete_all"
-                android:textColor="#D32F2F"
+                android:textColor="@color/color_expense"
                 android:textSize="16sp"
                 app:icon="@android:drawable/ic_menu_delete"
-                app:iconTint="#D32F2F"
-                app:strokeColor="#D32F2F" />
+                app:iconTint="@color/color_expense"
+                app:strokeColor="@color/color_expense" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/settings_delete_all_warning"
-                android:textColor="#D32F2F"
+                android:textColor="@color/color_expense"
                 android:textSize="12sp" />
 
         </LinearLayout>

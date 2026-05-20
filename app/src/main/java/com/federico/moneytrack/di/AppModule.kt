@@ -1,6 +1,7 @@
 package com.federico.moneytrack.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
 import com.federico.moneytrack.data.local.AppDatabase
 import com.federico.moneytrack.data.local.dao.*
@@ -39,4 +40,9 @@ object AppModule {
 
     @Provides
     fun provideBitcoinHoldingDao(database: AppDatabase): BitcoinHoldingDao = database.bitcoinHoldingDao()
+
+    @Provides
+    @Singleton
+    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences =
+        context.getSharedPreferences("moneytrack_prefs", Context.MODE_PRIVATE)
 }

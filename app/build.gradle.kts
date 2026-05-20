@@ -77,6 +77,15 @@ dependencies {
     // Vico Charts
     implementation(libs.vico.views)
 
+    // WorkManager + Hilt-Work
+    implementation(libs.work.runtime.ktx)
+    implementation(libs.androidx.hilt.work)
+    ksp(libs.androidx.hilt.work.compiler)
+    testImplementation(libs.work.testing)
+
+    // ViewPager2
+    implementation(libs.androidx.viewpager2)
+
     // Test
     testImplementation(libs.junit)
     testImplementation(libs.mockk)

@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.federico.moneytrack.R
 import com.federico.moneytrack.databinding.ItemTransactionBinding
 import com.federico.moneytrack.domain.model.TransactionWithCategory
 import java.text.NumberFormat
@@ -32,35 +33,26 @@ class TransactionAdapter(
         private val binding: ItemTransactionBinding,
         private val onItemClick: ((TransactionWithCategory) -> Unit)?
     ) : RecyclerView.ViewHolder(binding.root) {
-        
+
         fun bind(item: TransactionWithCategory) {
             binding.root.setOnClickListener {
                 onItemClick?.invoke(item)
             }
-            
+
             val transaction = item.transaction
             val category = item.category
-            
+
             val currencyFormat = NumberFormat.getCurrencyInstance(Locale("es", "ES"))
             val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
 
             binding.tvNote.text = transaction.note ?: "Sin nota"
             binding.tvDate.text = dateFormat.format(Date(transaction.date))
-            
-            // Amount Formatting
-            // Si es Expense -> Rojo y signo negativo (si no lo tiene)
-            // Si es Income -> Verde y signo positivo
-            
-            // Asumimos que category.transactionType nos da la pista, o si category es null (ej Bitcoin), miramos el contexto.
-            // Por simplicidad, si la categoría es INCOME -> Verde. Si es EXPENSE -> Rojo.
-            
+
             val isIncome = if (category != null) category.transactionType == "INCOME" else transaction.amount >= 0
-            val color = if (isIncome) Color.parseColor("#4CAF50") else Color.parseColor("#F44336")
-            
-            binding.tvAmount.setTextColor(color)
+            val colorRes = if (isIncome) R.color.color_income else R.color.color_expense
+            binding.tvAmount.setTextColor(ContextCompat.getColor(binding.root.context, colorRes))
             binding.tvAmount.text = currencyFormat.format(transaction.amount)
 
-            // Category Icon/Color
             if (category != null) {
                 binding.tvCategoryIcon.text = category.name.firstOrNull()?.toString()?.uppercase() ?: "₿"
                 try {
@@ -70,7 +62,9 @@ class TransactionAdapter(
                 }
             } else {
                 binding.tvCategoryIcon.text = "₿"
-                binding.tvCategoryIcon.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#F7931A"))
+                binding.tvCategoryIcon.backgroundTintList = ColorStateList.valueOf(
+                    ContextCompat.getColor(binding.root.context, R.color.color_bitcoin)
+                )
             }
         }
     }
@@ -85,4 +79,3 @@ class TransactionAdapter(
         }
     }
 }
-

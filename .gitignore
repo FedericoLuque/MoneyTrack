@@ -60,3 +60,6 @@ build/
 
 # Claude Code local files
 .claude/
+
+# Git worktrees
+.worktrees/

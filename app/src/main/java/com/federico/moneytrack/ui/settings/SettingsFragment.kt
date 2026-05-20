@@ -77,6 +77,37 @@ class SettingsFragment : Fragment() {
             ThemeManager.saveThemePreference(requireContext(), theme)
         }
 
+        // Reminder time picker
+        val (initHour, initMinute) = viewModel.getReminderTime()
+        binding.btnReminderTime.text = getString(R.string.settings_reminder_time_format, initHour, initMinute)
+
+        binding.btnReminderTime.setOnClickListener {
+            val (currentHour, currentMinute) = viewModel.getReminderTime()
+            android.app.TimePickerDialog(
+                requireContext(),
+                { _, selectedHour, selectedMinute ->
+                    viewModel.saveReminderTime(selectedHour, selectedMinute)
+                    binding.btnReminderTime.text = getString(R.string.settings_reminder_time_format, selectedHour, selectedMinute)
+                },
+                currentHour,
+                currentMinute,
+                true
+            ).show()
+        }
+
+        // Bitcoin alert threshold
+        val currentThreshold = viewModel.getBitcoinAlertThreshold()
+        binding.sliderBitcoinThreshold.value = currentThreshold.toFloat()
+        binding.tvBitcoinThresholdValue.text = "$currentThreshold%"
+
+        binding.sliderBitcoinThreshold.addOnChangeListener { _, value, fromUser ->
+            if (fromUser) {
+                val threshold = value.toInt()
+                binding.tvBitcoinThresholdValue.text = "$threshold%"
+                viewModel.saveBitcoinAlertThreshold(threshold)
+            }
+        }
+
         // Exportar / Importar
         binding.btnExport.setOnClickListener {
             exportLauncher.launch("moneytrack_backup.csv")
