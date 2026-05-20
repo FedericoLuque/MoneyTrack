@@ -4,7 +4,29 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
+
+    <!-- Escudo: relleno semitransparente -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M31,31h46v46h-46z" />
+        android:fillAlpha="0.2"
+        android:pathData="M54,30 L74,39 L74,55 C74,66 65,75 54,78 C43,75 34,66 34,55 L34,39 Z" />
+
+    <!-- Escudo: contorno blanco sólido -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M54,30 L74,39 L74,55 C74,66 65,75 54,78 C43,75 34,66 34,55 L34,39 Z" />
+
+    <!-- Checkmark -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M45,53 L51,59 L63,47" />
+
 </vector>
