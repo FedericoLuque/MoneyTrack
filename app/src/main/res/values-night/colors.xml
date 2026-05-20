@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="chip_background">#424242</color>
+    <!-- Semánticos dark — tonos suaves para no saturar la vista -->
+    <color name="color_income">#34D399</color>
+    <color name="color_expense">#F87171</color>
+    <color name="color_bitcoin">#FBBF24</color>
+
+    <!-- Chip background dark -->
+    <color name="chip_background">@color/slate_700</color>
 </resources>
